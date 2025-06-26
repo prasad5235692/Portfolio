@@ -1,0 +1,76 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 97%;
+  height: 20px; /* or whatever height you want */
+  color:#ccc;
+  z-index: 1000; /* make sure it's above all other sections */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+.icon-tooltip {
+  position: relative;
+  color: #ccc;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  color: #ccc;
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-size: 13px;
+  text-align: center;
+}
+
+.icon-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) scale(1.03);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+} 
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+}
+
+.nav-links li {
+  cursor: pointer;
+}
+.icon-tooltip :hover{
+ transform: scale(1.1);
+  transition: 0.2s;
+}
+.nav-icon {  
+  width: 24px;     
+  height: 24px;
+  object-fit: contain;
+  filter: invert(79%);
+}
+.nav-icon :hover{
+ transform: scale(2 );
+  transition: 0.2s;
+}
+@media (max-width: 768px) {
+  .header {
+    height: 50px;
+    padding: 0 10px;
+    font-size: 14px;
+  }
+}
+

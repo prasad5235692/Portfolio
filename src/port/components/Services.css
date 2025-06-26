@@ -1,0 +1,83 @@
+.services {
+  padding: 40px;
+  text-align: center;
+}
+p {
+  max-width: 800px;
+  margin: 0 auto 40px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.service-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+  margin-top: 28px;
+}
+
+.service-box {
+   background: rgba(255, 255, 255, 0.05); 
+  border: 0.8px solid rgba(35, 35, 35, 0.5);
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  padding: 20px;
+  background: #343539;
+  color: #ccc;
+  width: 250px;
+  transition: all 0.3s ease;
+  
+}
+
+.service-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px  rgba(255,255,255,0.336);
+  
+}
+
+.service-box h3 {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.service-box  ul li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #000000;
+}
+.service-box ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.service-box ul li {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+  position: relative;
+  padding-left: 1.2rem;
+}
+.service-box {
+     font-weight: bold;
+  padding:  18px;
+  border-radius: 15px;
+}
+.service-box:hover 
+{
+  transform: rotateY(17deg) rotateX(10deg) scale(1.05);
+  border-radius: 15px;
+  transition: 0.2s; 
+}
+li
+{
+text-align: left;
+font-weight: bold;
+}
+.but{
+   margin-top: 50px;
+ 
+
+}
+
+
+
