@@ -31,7 +31,7 @@ const About = () => {
             <li><strong>🎓 Degree:</strong> B.Sc Computer Science</li>
             <li><strong>🌐 Specialization:</strong> Full Stack Web Development (MERN)</li>
             <li><strong>📍 Location:</strong> Pudukkottai, Tamil Nadu, India</li>
-            <li><strong>📧 Email:</strong> yourmail@example.com</li>
+            <li><strong>📧 Email:</strong> prasad.itwed@gmail.com</li>
           </ul>
 
           <button href="/resume.pdf" download className="download-btn">📄 Download Resume</button>

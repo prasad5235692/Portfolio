@@ -129,7 +129,10 @@ font-weight: bold;
 
   .but {
     margin-top: 30px;
-  }
+     width: 65%;
+    font-size: 0.7rem;
+  
+}
 }
 
 
