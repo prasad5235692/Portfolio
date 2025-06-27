@@ -86,4 +86,69 @@
   text-decoration: none;
   transition: all 0.3s ease;
 }
+/* 📱 Mobile: width less than 768px */
+@media (max-width: 767px) {
+  .about-container {
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  .about-img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .about-text {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+  }
+
+  
+}
+
+/* 💻 Tablet: width between 768px and 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .about-container {
+    gap: 2.5rem;
+    flex-direction: row;
+  }
+
+  .about-img {
+    width: 220px;
+    height: 220px;
+  }
+
+  .about-text {
+    max-width: 90%;
+  }
+
+  .about-text p {
+    font-size: 1.05rem;
+  }
+
+}
+
+/* 🖥️ Laptop/Desktop: width 1024px and above */
+@media (min-width: 1024px) {
+  .about-img {
+    width: 280px;
+    height: 280px;
+  }
+
+  .about-text {
+    max-width: 600px;
+    text-align: left;
+  }
+
+  .about-text p {
+    font-size: 1.1rem;
+  }
+
+ 
+  
+}
 

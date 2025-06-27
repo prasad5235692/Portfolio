@@ -28,13 +28,13 @@ const About = () => {
           </p>
 
           <ul className="about-info">
-            <li><strong>🎓 Degree:</strong> B.Sc Computer Science</li>
-            <li><strong>🌐 Specialization:</strong> Full Stack Web Development (MERN)</li>
-            <li><strong>📍 Location:</strong> Pudukkottai, Tamil Nadu, India</li>
-            <li><strong>📧 Email:</strong> prasad.itwed@gmail.com</li>
+            <li className="li"><strong>🎓 Degree:</strong> B.Sc Computer Science</li><br></br>
+            <li className="li"><strong>🌐 Specialization:</strong> Full Stack Web Development (MERN)</li> <br></br>
+            <li className="li"><strong>📍 Location:</strong> Pudukkottai, Tamil Nadu, India</li><br></br>
+            <li className="li"><strong>📧 Email:</strong> prasad.itwed@gmail.com</li><br></br>
           </ul>
 
-          <button href="/resume.pdf" download className="download-btn">📄 Download Resume</button>
+          <button href="/resume.pdf" download >📄 Download Resume</button>
         </div>
       </div>
     </section>
