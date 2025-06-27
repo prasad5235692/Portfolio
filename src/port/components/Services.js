@@ -28,7 +28,7 @@ function Services() {
         </div>
       </div>
        
-      <button className="but" > CHECK OUT</button>
+      <button > CHECK OUT</button>
     
     </section>
   );
