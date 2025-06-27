@@ -1,10 +1,10 @@
 // Inside Home.js
 import React, { useEffect } from "react";
-import Header from "./components/Header";
-import Services from "./components/Services";
+import {Routes,Route } from "react-router-dom";
+import Header from "./port/components/Header";
+import Services from "./port/components/Services";
+import HeroSection from "./port/components/HeroSection";
 import { useLocation } from "react-router-dom";
-import HeroSection from "./components/HeroSection";
-
 const Home = () => {
   const location = useLocation();
 
@@ -19,10 +19,11 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Header />
-      <Services/>
-       <HeroSection />
-    
+      <Routes>
+        <Route path="/Header" element={<Header/>}/>
+        <Route path="/HeroSection" element={<HeroSection/>}/>
+        <Route path="/Services" element={<Services/>}/>
+      </Routes>
     </div>
   );
 };

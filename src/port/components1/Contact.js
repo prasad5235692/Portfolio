@@ -12,7 +12,7 @@ import {
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 import img from "../../assets/qr-code.png";
-import "./ContactInfoSection.css";
+import "./Contact.css";
 
 const ContactInfoSection = () => {
   const location = useLocation();

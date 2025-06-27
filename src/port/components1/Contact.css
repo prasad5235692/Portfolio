@@ -27,8 +27,18 @@
   font-size: 30px;
   line-height: 90px;
   font-weight: bold;
-  box-shadow: 0 0 15px  rgba(168, 168, 168, 0.409);
+  box-shadow: 0 4px 10px rgba(255,255,255,0.336);
+    animation: floatIcon 3s ease-in-out infinite;
 }
+@keyframes floatIcon {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 
 .name {
   font-size: 22px;

@@ -1,7 +1,11 @@
 body {
-  background-color: #343539;
-  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  background: #343539 ;
+            
+  background-blend-mode: screen;
+  font-family:  sans-serif;
   color: #ccc;
+  
   
 }
 h1{
@@ -25,6 +29,7 @@ button {
   background-size: 200%;
   animation: animationGradient 2s linear infinite;
   box-shadow: 0 0 15px rgba(255,255,255,0.336);
+  
 }
 @keyframes animationGradient
 {
@@ -40,4 +45,12 @@ button:hover {
 
 button:focus {
   outline: 2px solid rgba(50, 0, 99, 0.6);
+}
+
+@media (max-width: 600px) {
+
+  button {
+    width: 65%;
+    font-size: 0.7rem;
+  }
 }

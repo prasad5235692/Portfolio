@@ -1,76 +1,144 @@
+/* GLOBAL RESET (Optional but recommended) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #1f1f1f; /* Optional dark theme */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* HEADER MAIN STYLES */
 .header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 97%;
-  height: 20px; /* or whatever height you want */
-  color:#ccc;
-  z-index: 1000; /* make sure it's above all other sections */
+  width: 100%;
+  height: 60px;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 0 15px;
+  background: transparent; /* Or use a gradient if you prefer */
+  color: #ccc;
+  backdrop-filter: blur(8px); /* Optional background blur */
 }
+
+/* LOGO FLOATING ANIMATION */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  animation: floatIcon 3s ease-in-out infinite;
+  color: #ffffff;
+  user-select: none;
+}
+
+/* FLOATING EFFECT */
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* NAV LINKS CONTAINER */
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+/* EACH ICON ITEM */
 .icon-tooltip {
   position: relative;
-  color: #ccc;
   font-size: 20px;
+  color: #ccc;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 
+.icon-tooltip:hover {
+  transform: scale(1.15);
+}
+
+/* TOOLTIP TEXT */
 .tooltip-text {
   visibility: hidden;
-  color: #ccc;
+  opacity: 0;
   position: absolute;
   bottom: -25px;
   left: 50%;
   transform: translateX(-50%);
-  opacity: 0;
-  white-space: nowrap;
   transition: opacity 0.3s ease, transform 0.3s ease;
   font-size: 13px;
-  text-align: center;
+  color: #ccc;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .icon-tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
-  transform: translateX(-50%) scale(1.03);
+  transform: translateX(-50%) scale(1.05);
 }
 
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-} 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 40px;
-}
-
-.nav-links li {
-  cursor: pointer;
-}
-.icon-tooltip :hover{
- transform: scale(1.1);
-  transition: 0.2s;
-}
-.nav-icon {  
-  width: 24px;     
+/* ICON IMAGE (FOR PNG ICONS) */
+.nav-icon {
+  width: 24px;
   height: 24px;
   object-fit: contain;
-  filter: invert(79%);
+  filter: invert(85%);
+  transition: transform 0.2s ease;
 }
-.nav-icon :hover{
- transform: scale(2 );
-  transition: 0.2s;
+
+.nav-icon:hover {
+  transform: scale(1);
 }
+
+/* === RESPONSIVE ADJUSTMENTS === */
 @media (max-width: 768px) {
   .header {
     height: 50px;
-    padding: 0 10px;
-    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    gap: 20px;
+  }
+
+  .icon-tooltip {
+    font-size: 18px;
+  }
+
+  .tooltip-text {
+    font-size: 11px;
+    bottom: -22px;
   }
 }
 
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 14px;
+  }
+
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tooltip-text {
+    font-size: 10px;
+    bottom: -20px;
+  }
+}

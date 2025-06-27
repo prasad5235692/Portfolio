@@ -1,0 +1,89 @@
+.about-section {
+  padding: 4rem 2rem;
+  background-color:#343539;
+  color: #f0f0f0;
+  text-align: center;
+}
+
+.about-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+}
+
+/* Container Layout */
+.about-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.about-img {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  padding: 4px; /* padding between image and border */
+  background: linear-gradient(to right, #656565, #7f42a7, #6600c5, #39016d, #757575, #656565);
+  background-size: 200%;
+  animation: animationGradient 3s linear infinite;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.336);
+}
+
+.about-img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  background-color: #121212; /* optional fallback */
+}
+
+/* Gradient animation */
+@keyframes animationGradient {
+  to {
+    background-position: 200%;
+  }
+}
+
+
+/* Text Styling */
+.about-text {
+  max-width: 600px;
+  text-align: left;
+}
+
+.about-text p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #ccc;
+}
+
+.about-info {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1.5rem;
+  color: #bbb;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.about-info li {
+  margin-bottom: 0.5rem;
+}
+
+/* Resume Button */
+.download-btn {
+  margin-top: 1.5rem;
+  display: inline-block;
+  background-color: #00ffc3;
+  color: #000;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+

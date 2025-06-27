@@ -1,33 +1,112 @@
 
+
 .hero-section {
+
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5vw;
+  flex-wrap: wrap;}
+
+
+/*
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}*/
+.spline-canvas {
+  align-items: right;
 }
 .spline-canvas {
   align-items: right;
 }
+.spline-canvas {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.spline-canvas {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  align-items: flex-end; /* not 'right' */
+}
+/* Hide watermark (development only) */
+iframe[src*="spline.design"] + div,
+iframe[src*="spline.design"] ~ div,
+.spline-viewer + div,
+.spline-viewer ~ div {
+  display: none !important;
+}
 .hero-overlay {
-
   margin-top: 80px;
   position: absolute;
   top: 20%;
-  left: 2%;
+  left: 6%;
   color: #ccc;
   max-width: 40%;
 }
 .hero-overlay h1 {
   font-size: 2.3rem;
-  margin: 0.5rem 0;
- 
+  margin: 1rem 0;  
 }
-.Spline{
-  margin-top: 40px;
-  margin-left: 33px;
-}
+
 
 
 .tag1{
   margin-top: 40px;
 }
+@media (max-width: 1024px) {
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 60px 5vw 40px;
+    gap: 30px;
+  }
+
+  .hero-overlay {
+    max-width: 60%;
+    margin-top: 60px;
+    margin-left: 8px;
+  }
+.hero-overlay p{
+  font-size: 1.3rem;
+}
+  .hero-overlay h1 {
+    font-size: 1.5rem;
+  }
+  
+}
+
+
+@media (max-width: 600px) {
+
+    .hero-overlay {
+    position: static;
+    text-align: center;
+    max-width: 90%;
+    margin-top: 0;}
+
+  .hero-overlay h1 {
+    font-size: 1rem;
+  }
+  .hero-overlay h3{
+  font-size: 0.8rem;
+}
+ .Spline {
+    margin-top: 10px;
+    margin-right: 100px;
+    max-width: 100%;
+   
+  } 
+}
+
+
+
