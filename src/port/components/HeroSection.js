@@ -29,8 +29,6 @@ const HeroSection = () => {
             scene="https://prod.spline.design/IEz-yu7jpuzEOzJu/scene.splinecode"
         className="spline-canvas"   frameBorder="0"
       />
-    
-<spline-viewer url="https://prod.spline.design/IEz-yu7jpuzEOzJu/scene.splinecode"></spline-viewer>
 </div>
 
       {/* Text content overlay */}
