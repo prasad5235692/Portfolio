@@ -17,7 +17,7 @@ html, body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 98%;
   height: 60px;
   z-index: 1000;
   display: flex;
@@ -56,7 +56,7 @@ html, body {
 .icon-tooltip {
   position: relative;
   font-size: 20px;
-  color: #ccc;
+  color: #ffffff;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -70,12 +70,12 @@ html, body {
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  bottom: -25px;
+  bottom: -35px;
   left: 50%;
   transform: translateX(-50%);
   transition: opacity 0.3s ease, transform 0.3s ease;
   font-size: 13px;
-  color: #ccc;
+  color: #ffffff;
   background: rgba(0, 0, 0, 0.6);
   padding: 3px 8px;
   border-radius: 4px;
@@ -94,7 +94,7 @@ html, body {
   width: 24px;
   height: 24px;
   object-fit: contain;
-  filter: invert(85%);
+  filter: invert(100%);
   transition: transform 0.2s ease;
 }
 

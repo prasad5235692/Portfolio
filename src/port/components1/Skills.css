@@ -1,17 +1,28 @@
 /* Base */
 .modern-skills-section {
   padding: 60px 20px;
-  background: #343539;
+    background-color: #000; /* Fallback */
+              
   font-family: 'Poppins', sans-serif;
 }
 
-.modern-skills-title {
+.modern-skills-section h2 {
   text-align: center;
-  font-size: 1.5rem; margin-bottom: 70px;
+  font-size: 2rem; 
+  margin-bottom: 70px;
   letter-spacing: 1px;
     font-family: 'Orbitron', sans-serif;
   color: #ffffff;
   text-shadow: 0 0 8px #5f5f5f;
+  
+}
+p.modern-skills-title1 {
+  text-align: center;
+  margin-bottom: 70px;
+  letter-spacing: 1px;
+    font-family: 'Orbitron', sans-serif;
+  color: #ffffff;
+  
 }
 
 /* Skill cards */
@@ -19,13 +30,29 @@
   display: grid;
   gap: 20px;
   grid-template-columns: 1fr;
+
+  
 }
+
+.modern-skill-text h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.modern-skill-text p {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
 
 @media (min-width: 768px) {
   .modern-skills-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
 }
+
+
 
 @media (min-width: 1024px) {
   .modern-skills-grid {
@@ -34,26 +61,27 @@
 }
 
 .modern-skill-card {
-  background: linear-gradient(145deg,#343539);
-  border: 0.8px solid  rgba(35, 35, 35, 0.5);;
+    background: radial-gradient(circle at 75% 20%, rgba(255, 141, 10, 0.29), transparent 50%),
+              radial-gradient(circle at 80% 30%, rgba(19, 19, 19, 0.15), transparent 70%);
+    border: 0.1px solid rgba(124, 65, 36, 0.5);
   border-radius: 20px;
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
   display: flex;
+  margin-bottom: 30px;
   align-items: center;
   gap: 15px;
 }
 
 .modern-skill-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(255,255,255,0.336);
+   box-shadow: 0 8px 30px  rgba(196, 99, 51, 0.5);
 }
 
 .modern-skill-icon {
   font-size: 2rem;
-  background: #525151;
-  color: #ccc;
+  background:rgba(0, 0, 0, 0.5);
+  color: #ffffff;
   border-radius: 50%;
   padding: 12px;
   display: flex;
@@ -61,7 +89,6 @@
   justify-content: center;
   min-width: 55px;
   min-height: 55px;
-  box-shadow: 0 4px 10px rgba(255,255,255,0.336);
   animation: floatIcon 3s ease-in-out infinite;
 }
 @keyframes floatIcon {
@@ -73,12 +100,10 @@
   }
 }
 
-.modern-skill-text h3 {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-}
-
-.modern-skill-text p {
-  color: #ccc;
-  font-size: 0.9rem;
+@media (max-width: 480px) {
+  
+  .modern-skills-section h2 {
+    font-size: 1.5rem;
+/* TOO SMALL on larger screens */
+  }
 }

@@ -16,8 +16,8 @@ import "./Services.css";
 function Services() {
   return (
     <section className="services">
-      <h2><span1 className="color">WHAT </span1>WE DO?</h2>
-      <p>Yes, I can help you with Full Stack Development both frontend and backend including.
+      <h2 ><span >WHAT </span>WE DO?</h2>
+      <p className="modern-skills-title1">Yes, I can help you with Full Stack Development both frontend and backend including.
         If you tell me what you're working on or want to build I can guide you step by step including project structure, coding, deployment, and more. Would you like to start with a project or learn topic by topic?</p>
       <div className="service-list">
         <div className="service-box"> Frontend (Client-Side)<ul> <li><IoLogoHtml5 />  HTML, CSS,</li><li><DiJavascript />  JavaScript</li><li><FaReact />  React.js</li><li><FaBootstrap />  Bootstrap</li> </ul> </div>

@@ -11,7 +11,7 @@ const About = () => {
   }, []);
   return (
     <section className="about-section" id="about">
-      <h2><span className="highlight">About</span> Me</h2>
+      <h2><span style={{ color: '#d28203' }}>About</span> Me</h2>
       <div className="about-container">
         {/* Profile Image */}
         <div className="about-img">
@@ -28,13 +28,13 @@ const About = () => {
           </p>
 
           <ul className="about-info">
-            <li className="li"><strong>🎓 Degree:</strong> B.Sc Computer Science</li><br></br>
-            <li className="li"><strong>🌐 Specialization:</strong> Full Stack Web Development (MERN)</li> <br></br>
-            <li className="li"><strong>📍 Location:</strong> Pudukkottai, Tamil Nadu, India</li><br></br>
-            <li className="li"><strong>📧 Email:</strong> prasad.itwed@gmail.com</li><br></br>
+            <li className="li"><strong>🎓 Degree:</strong> B.Sc Computer Science</li>
+            <li className="li"><strong>🌐 Specialization:</strong> Full Stack Web Development (MERN)</li>
+            <li className="li"><strong>📍 Location:</strong> Pudukkottai, Tamil Nadu, India</li>
+            <li className="li"><strong>📧 Email:</strong> prasad.itwed@gmail.com</li>
           </ul>
 
-          <button href="/resume.pdf" download >📄 Download Resume</button>
+          <button className="nav-button" href="/resume.pdf" download >📄 Download Resume</button>
         </div>
       </div>
     </section>

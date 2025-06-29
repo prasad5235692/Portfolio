@@ -1,6 +1,7 @@
 .education-section {
   padding: 3rem 2rem;
-  background-color:  #343539;
+   background-color: #000; /* Fallback */
+ 
   color: #ffffff;
   text-align: center;
 }
@@ -10,8 +11,8 @@
   margin-bottom: 1rem;
 }
 
-.education-section .highlight {
-  color: #ccc;
+.highlight {
+  color: #d28203;
   font-size: 2rem;
 }
 
@@ -31,10 +32,12 @@
 }
 
 .edu-card {
-  background:  #343539;
+  background:  #000;
   border-radius: 16px;
   width: 300px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+  border: 1px solid #d28203;
+ border: 0.1px solid rgba(124, 65, 36, 0.5);
+ margin: 20px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
    animation: floatIcon 2s ease-in-out infinite;
@@ -51,7 +54,7 @@
 
 .edu-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px  rgba(227, 225, 225, 0.5);
+  box-shadow: 0 20px 50px  rgba(196, 99, 51, 0.5);
 }
 
 .edu-image {
@@ -89,3 +92,73 @@
   margin-right: 0.6rem;
   font-size: 1.1rem;
 }
+/* === RESPONSIVE STYLES === */
+
+@media (max-width: 1024px) {
+  .education-section {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .education-section h2,
+  .highlight {
+    font-size: 1.8rem;
+  }
+
+  .education-section p {
+    font-size: 0.95rem;
+  }
+
+  .edu-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .edu-content li {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .edu-card {
+    width: 90%;
+    margin: 1rem 0;
+  }
+
+  .education-section h2,
+  .highlight {
+    font-size: 1.6rem;
+  }
+
+  .education-section p {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .education-section {
+    padding: 2rem 1rem;
+  }
+
+  .education-section h2,
+  .highlight {
+    font-size: 1.4rem;
+  }
+
+  .education-section p {
+    font-size: 0.85rem;
+  }
+
+  .edu-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .edu-content li {
+    font-size: 0.85rem;
+  }
+}
+

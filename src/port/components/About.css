@@ -1,7 +1,7 @@
 .about-section {
   padding: 4rem 2rem;
-  background-color:#343539;
-  color: #f0f0f0;
+  background-color:#000;
+  color: #ffff;
   text-align: center;
 }
 
@@ -22,15 +22,16 @@
 }
 
 .about-img {
+  margin-bottom: 100px;
   position: relative;
   width: 280px;
   height: 280px;
   border-radius: 50%;
   padding: 4px; /* padding between image and border */
-  background: linear-gradient(to right, #656565, #7f42a7, #6600c5, #39016d, #757575, #656565);
+  background: linear-gradient(to right,  #785b3d, #a76542, #d7d7d7, #f76e06, #997761,  #6c5737);;
   background-size: 200%;
   animation: animationGradient 3s linear infinite;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.336);
+  box-shadow: 0 0 15px rgba(180, 115, 59, 0.779);
 }
 
 .about-img img {
@@ -57,17 +58,17 @@
 }
 
 .about-text p {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #ccc;
+    max-width: 800px;
+  margin: 0 auto 40px;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .about-info {
   list-style: none;
   padding-left: 0;
   margin-top: 1.5rem;
-  color: #bbb;
+  color: #ccc;
   font-size: 1rem;
   line-height: 1.6;
 }
@@ -76,16 +77,7 @@
   margin-bottom: 0.5rem;
 }
 
-/* Resume Button */
-.download-btn {
-  margin-top: 1.5rem;
-  display: inline-block;
-  background-color: #00ffc3;
-  color: #000;
-  border-radius: 30px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
+
 /* 📱 Mobile: width less than 768px */
 @media (max-width: 767px) {
   .about-container {
@@ -93,7 +85,8 @@
     padding: 0 1rem;
   }
 
-  .about-img {
+  .about-img { 
+    margin-bottom: -20px;
     width: 180px;
     height: 180px;
   }

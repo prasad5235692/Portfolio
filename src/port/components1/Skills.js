@@ -37,7 +37,8 @@ const Skills = () => {
       className="modern-skills-section"
       style={{ marginTop: "80px" }} // 👈 Add this inline to offset the fixed header
     >
-      <h2 className="modern-skills-title">Tech Stack</h2>
+      <h2 ><span style={{ color: '#d28203' }}>TECH </span>STACK</h2>
+      <p className="modern-skills-title1">Strong in JavaScript, React.js, Node.js, Express.js, and MongoDB. Experienced in building RESTful APIs, responsive frontends, and scalable backend systems. Familiar with Git, Postman, and modern UI frameworks like Tailwind CSS.</p>
       <div className="modern-skills-grid">
         {skillsData.map((item, idx) => (
           <div key={idx} className="modern-skill-card">

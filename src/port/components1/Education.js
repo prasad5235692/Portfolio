@@ -38,7 +38,7 @@ const Education = () => {
   return (
     <section className="education-section">
       <h2><span className="highlight">EDU</span>CATION</h2>
-      <p>
+      <p className="modern-skills-title1">
         I have a strong academic background in <strong>Computer Science</strong>, having completed my <strong>B.Sc</strong> from Alagappa University. I'm passionate about using my full-stack development knowledge to solve real-world problems.
       </p>
       <div className="card-container">
