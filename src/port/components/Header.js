@@ -29,7 +29,7 @@ const Header = () => {
 
           <div
             className="icon-tooltip"
-            onClick={() => navigate('/', { state: { scrollTo: 'education-section' } })}
+            onClick={() => navigate("/", { state: { scrollTo: "Education-section" } })}
             style={{ cursor: 'pointer' }}
           >
             <span className="span"><FontAwesomeIcon icon={faUserGraduate} /></span>

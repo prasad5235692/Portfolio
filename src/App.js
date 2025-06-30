@@ -1,5 +1,4 @@
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./port/components/Header";
 import HeroSection from "./port/components/HeroSection";
@@ -14,8 +13,8 @@ import "./App.css";
 
 function App() {
   const location = useLocation();
+  const [showSections, setShowSections] = useState(false);
 
-  // Scroll to section based on navigation state
   useEffect(() => {
     const scrollTarget = location?.state?.scrollTo;
     if (scrollTarget) {
@@ -24,25 +23,34 @@ function App() {
         section.scrollIntoView({ behavior: "smooth" });
       }
     }
+
+    // Delay rendering of service/skills sections after Hero
+    const timer = setTimeout(() => {
+      setShowSections(true);
+    }, 1000); // Adjust delay if needed
+
+    return () => clearTimeout(timer);
   }, [location]);
 
   return (
     <div className="app">
-    
       <Header />
 
       <Routes>
-        {/* Home page with scroll sections */}
         <Route
           path="/"
           element={
             <>
               <HeroSection />
-              <Services />
-              <Education />
-              <Skills />
-              <Project />
-              <Contact />
+              {showSections && (
+                <>
+                  <Services />
+                  <Education />
+                  <Skills />
+                  <Project />
+                  <Contact />
+                </>
+              )}
             </>
           }
         />
@@ -52,16 +60,18 @@ function App() {
           element={
             <>
               <HeroSection />
-              <Services />
-              <Education />
-              <Skills />
-              <Project />
-              <Contact />
+              {showSections && (
+                <>
+                  <Education />
+                  <Skills />
+                  <Project />
+                  <Contact />
+                </>
+              )}
             </>
           }
         />
 
-        {/* Separate about page */}
         <Route path="/about" element={<About />} />
       </Routes>
     </div>

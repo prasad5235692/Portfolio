@@ -4,7 +4,6 @@
 }
 .colop{
   bottom:20px;
-  position: absolute;
 }
 p {top: 20px;
   max-width: 800px;
@@ -98,11 +97,11 @@ font-weight: bold;
 }
 @media (max-width: 1024px) {
   .services {
-    padding: 20px 15px;
+    padding: 10px 15px;
   }
 
   .service-list {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat( minmax(160px, 1fr));
     gap: 30px;
   }
 

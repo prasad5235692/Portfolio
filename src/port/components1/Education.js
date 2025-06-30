@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import img1 from "../../assets/Education.jpg";
 import img2 from "../../assets/Education1.jpg";
 import img3 from "../../assets/Education2.jpg";
 import "./Education.css";
+
+const Education = () => {
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const section = document.getElementById(location.state.scrollTo);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
 
 const educationData = [
   {
@@ -34,7 +48,9 @@ const educationData = [
   },
 ];
 
-const Education = () => {
+
+ 
+
   return (
     <section className="education-section">
       <h2><span className="highlight">EDU</span>CATION</h2>
