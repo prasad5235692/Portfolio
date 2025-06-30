@@ -17,9 +17,12 @@ const Header = () => {
     <header className="header">
       <div className="logo"><span1>I</span1>T</div>
       <nav>
-        <div className="nav-links">
+        <div  className="nav-links">
 
-          <div className="icon-tooltip" 
+          <div   data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="1000" 
+     className="icon-tooltip" 
             onClick={() => navigate('/', { state: { scrollTo: 'Home-section' } })}
             style={{ cursor: 'pointer' }}
           >
@@ -27,7 +30,9 @@ const Header = () => {
             <span className="tooltip-text">Home</span>
           </div>
 
-          <div
+          <div data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="1500"
             className="icon-tooltip"
             onClick={() => navigate("/", { state: { scrollTo: "Education-section" } })}
             style={{ cursor: 'pointer' }}
@@ -36,7 +41,9 @@ const Header = () => {
             <span className="tooltip-text">Education</span>
           </div>
 
-          <div
+          <div data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="2000"
             className="icon-tooltip"
             onClick={() => navigate('/', { state: { scrollTo: 'skills-section' } })}
             style={{ cursor: 'pointer' }}
@@ -47,7 +54,9 @@ const Header = () => {
             <span className="tooltip-text">Skills</span>
           </div>
 
-          <div
+          <div data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="2500"
             className="icon-tooltip"
             onClick={() => navigate('/', { state: { scrollTo: 'project-section' } })}
             style={{ cursor: 'pointer' }}
@@ -56,7 +65,9 @@ const Header = () => {
             <span className="tooltip-text">Projects</span>
           </div>
 
-          <div
+          <div data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="3000"
             className="icon-tooltip"
             onClick={() => navigate('/', { state: { scrollTo: 'contact-section' } })}
             style={{ cursor: 'pointer' }}

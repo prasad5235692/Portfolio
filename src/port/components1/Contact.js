@@ -31,7 +31,7 @@ const ContactInfoSection = () => {
       <div className="card-glass">
         <div className="avatar-glow">PK</div>
         <h2 className="name">Prasad K</h2>
-        <p className="title">Fullstack Developer</p>
+        <p className="title">MERNStack Developer</p>
 
         <div className="contact-group">
           <div className="contact-item">

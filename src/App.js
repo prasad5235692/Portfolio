@@ -8,6 +8,8 @@ import Education from "./port/components1/Education";
 import Skills from "./port/components1/Skills";
 import Contact from "./port/components1/Contact";
 import Project from "./port/components1/Project";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 import "./App.css";
 
@@ -24,13 +26,19 @@ function App() {
       }
     }
 
-    // Delay rendering of service/skills sections after Hero
     const timer = setTimeout(() => {
       setShowSections(true);
-    }, 1000); // Adjust delay if needed
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [location]);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1500,
+      once: true,
+    });
+  }, []);
 
   return (
     <div className="app">
