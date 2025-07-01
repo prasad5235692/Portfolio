@@ -15,7 +15,10 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="logo"><span1>I</span1>T</div>
+      <div data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="1500">
+      <div className="logo"><span1>I</span1>T</div></div>
       <nav>
         <div  className="nav-links">
 
