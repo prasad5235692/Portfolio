@@ -6,7 +6,7 @@
 
 .card-glass {
 
-  background: radial-gradient(circle at 10% 0%, rgba(255, 141, 10, 0.13), transparent 50%),
+  background: radial-gradient(circle at 50% 0%, rgba(255, 141, 10, 0.792), transparent 50%),
               radial-gradient(circle at 80% 30%, rgba(19, 19, 19, 0.15), transparent 60%);
 border: 0.1px solid rgba(124, 65, 36, 0.5);
   backdrop-filter: blur(18px);
@@ -15,10 +15,13 @@ border: 0.1px solid rgba(124, 65, 36, 0.5);
   color: #fff;
   text-align: center;
   max-width: 360px;
+    box-shadow: 5px 5px 10px rgba(255, 111, 39, 0.5),
+                -10px -10px 20px rgba(25, 17, 13, 0.5); 
   margin: auto;
 }
 .card-glass:hover{
-    box-shadow: 0 8px 50px  rgba(196, 99, 51, 0.5);
+     box-shadow: 15px 15px 30px  rgba(255, 129, 2, 0.5),
+                5px 5px 10px rgba(124, 65, 36, 0.5);
 }
 
 .avatar-glow {
@@ -30,7 +33,7 @@ border: 0.1px solid rgba(124, 65, 36, 0.5);
   font-size: 30px;
   line-height: 90px;
   font-weight: bold;
-  box-shadow: 0 4px 10px rgba(184, 131, 16, 0.336);
+  box-shadow: 0 4px 15px rgba(1, 0, 0, 0.336);
     animation: floatIcon 3s ease-in-out infinite;
 }
 @keyframes floatIcon {

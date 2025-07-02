@@ -59,7 +59,7 @@ p.modern-skills-title1 {
 }
 
 .modern-skill-card {
-    background: radial-gradient(circle at 10% 0%, rgba(255, 141, 10, 0.103), transparent 50%),
+    background: radial-gradient(circle at 5% 0%, rgba(255, 141, 10, 0.671), transparent 50%),
               radial-gradient(circle at 80% 30%, rgba(19, 19, 19, 0.15), transparent 70%);
     border: 0.1px solid rgba(124, 65, 36, 0.5);
   border-radius: 20px;
@@ -69,16 +69,19 @@ p.modern-skills-title1 {
   margin-bottom: 30px;
   align-items: center;
   gap: 15px;
+    box-shadow: 5px 5px 10px rgba(255, 111, 39, 0.5),
+                -10px -10px 20px rgba(25, 17, 13, 0.5); 
 }
 
 .modern-skill-card:hover {
   transform: translateY(-5px);
-   box-shadow: 0 8px 30px  rgba(196, 99, 51, 0.5);
+    box-shadow: 15px 15px 30px  rgba(255, 129, 2, 0.5),
+                5px 5px 10px rgba(124, 65, 36, 0.5);
 }
 
 .modern-skill-icon {
   font-size: 2rem;
-  background:rgba(0, 0, 0, 0.5);
+  background-color:rgba(0, 0, 0, 0.5);
   color: #ffffff;
   border-radius: 50%;
   padding: 12px;

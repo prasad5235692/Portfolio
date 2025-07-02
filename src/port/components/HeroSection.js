@@ -48,8 +48,10 @@ const HeroSection = () => {
                   bg-[radial-gradient(circle,rgba(255, 150, 22, 0.96),transparent_70%)]
                   blur-[80px] z-0 pointer-events-none" />
          
-            <Spline data-aos="zoom-in"
-            data-aos-duration="2500"
+            <Spline data-aos="fade-zoom-in"
+     data-aos-easing="ease-in-back"
+     data-aos-delay="500"
+     data-aos-offset="0"
               scene="https://prod.spline.design/Z2AEf5-3ohW3XiFM/scene.splinecode"
             />
         

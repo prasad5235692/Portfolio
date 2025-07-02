@@ -33,6 +33,11 @@
   animation: animationGradient 3s linear infinite;
   box-shadow: 0 0 15px rgba(180, 115, 59, 0.779);
 }
+.about-img :hover{
+ box-shadow: 15px 15px 30px  rgba(255, 129, 2, 0.5),
+                15px 15px 30px rgba(255, 129, 2, 0.5);
+}
+
 
 .about-img img {
   width: 100%;

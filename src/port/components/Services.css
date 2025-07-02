@@ -29,12 +29,15 @@ p {top: 20px;
   color: #ccc;
   width: 250px;
   transition: all 0.3s ease;
+  box-shadow: 5px 5px 10px rgba(255, 111, 39, 0.5),
+                -10px -10px 20px rgba(25, 17, 13, 0.5); ;
   
 }
 
 .service-box:hover {
 transform: translateY(-2  px);
-   box-shadow: 0 8px 30px  rgba(196, 99, 51, 0.5);
+   box-shadow: 15px 15px 30px  rgba(255, 129, 2, 0.5),
+                5px 5px 10px rgba(124, 65, 36, 0.5);
   
 }
 
@@ -89,6 +92,25 @@ font-weight: bold;
   bottom: 30px;
 }
 @media (max-width: 1024px) {
+  .services {
+    padding: 10px 15px;
+  }
+
+  .service-list {
+    grid-template-columns: repeat( minmax(160px, 1fr));
+    gap: 30px;
+  }
+
+  .service-box {
+    width: auto;
+    padding: 15px;
+  }
+
+  .service-box ul li {
+    font-size: 0.9rem;
+  }
+}
+@media (min-width: 1024px) {
   .services {
     padding: 10px 15px;
   }

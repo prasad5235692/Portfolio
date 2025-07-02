@@ -7,8 +7,9 @@
 }
 
 .education-section h2 {
+  margin-top: 50px;
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 60px;
 }
 
 .highlight {
@@ -42,6 +43,8 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
    animation: floatIcon 2s ease-in-out infinite;
   color: #ffffff;
+    box-shadow: 5px 5px 10px rgba(255, 111, 39, 0.5),
+                -10px -10px 20px rgba(25, 17, 13, 0.5); 
   user-select: none;
 }
 
@@ -54,7 +57,8 @@
 
 .edu-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 50px  rgba(196, 99, 51, 0.5);
+    box-shadow: 15px 15px 30px  rgba(255, 129, 2, 0.5),
+                5px 5px 10px rgba(124, 65, 36, 0.5);
 }
 
 .edu-image {
