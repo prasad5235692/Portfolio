@@ -8,7 +8,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: #000; /* Fallback */
+  background-color: #000000; /* Fallback */
   color: white;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;

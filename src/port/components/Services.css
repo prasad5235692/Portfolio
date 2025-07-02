@@ -33,7 +33,7 @@ p {top: 20px;
 }
 
 .service-box:hover {
-transform: translateY(-2px);
+transform: translateY(-2  px);
    box-shadow: 0 8px 30px  rgba(196, 99, 51, 0.5);
   
 }

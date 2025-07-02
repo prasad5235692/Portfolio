@@ -26,7 +26,7 @@ const Header = () => {
      data-aos-easing="linear"
      data-aos-duration="1000" 
      className="icon-tooltip" 
-            onClick={() => navigate('/', { state: { scrollTo: 'Home-section' } })}
+            onClick={() => navigate('/', { state: { scrollTo: 'Hero-section' } })}
             style={{ cursor: 'pointer' }}
           >
             <span className="span"><FontAwesomeIcon icon={faHouse} /></span>
@@ -37,7 +37,7 @@ const Header = () => {
      data-aos-easing="linear"
      data-aos-duration="1500"
             className="icon-tooltip"
-            onClick={() => navigate("/", { state: { scrollTo: "Education-section" } })}
+            onClick={() => navigate("/", { state: { scrollTo: "education-section" } })}
             style={{ cursor: 'pointer' }}
           >
             <span className="span"><FontAwesomeIcon icon={faUserGraduate} /></span>
