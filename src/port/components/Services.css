@@ -30,7 +30,7 @@ p {top: 20px;
   width: 250px;
   transition: all 0.3s ease;
   box-shadow: 5px 5px 10px rgba(255, 111, 39, 0.5),
-                -10px -10px 20px rgba(25, 17, 13, 0.5); ;
+                -10px -10px 20px rgba(25, 17, 13, 0.5); 
   
 }
 
