@@ -118,3 +118,11 @@
   text-align: center;
   margin-left: 69px;
 }
+@media (max-width:960px) {
+
+  
+.but1{
+  text-align: center;
+  margin-left: 35px;
+}
+}
