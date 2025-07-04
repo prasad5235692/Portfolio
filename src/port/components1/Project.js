@@ -26,6 +26,7 @@ const Project = () => {
   }, [location]);
 
   return (
+    
     <section className="project-section" id="project-section">
     
       <div className="project-container">

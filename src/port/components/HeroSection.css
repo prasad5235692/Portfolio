@@ -31,9 +31,6 @@ body, html {
   pointer-events: none;
   z-index: 1;
   transform: scale(0.8); /* Full size */
- 
-  backface-visibility: hidden;
-  perspective: 1000px;
 }
 
 .spline-container    {
