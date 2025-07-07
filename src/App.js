@@ -7,7 +7,7 @@ import About from "./port/components/About";
 import Education from "./port/components1/Education";
 import Skills from "./port/components1/Skills";
 import Contact from "./port/components1/Contact";
-
+import Project from "./port/components1/Project";
 import AOS from "aos";
 import ContactAss from "./port/components1/ContactAss";
 import "aos/dist/aos.css";
@@ -56,7 +56,7 @@ function App() {
                   <Services />
                   <Education />
                   <Skills />
-                  
+                  <Project />
                   <Contact />
                   <ContactAss />
                 </>
@@ -74,7 +74,7 @@ function App() {
                 <>
                   <Education />
                   <Skills />
-              
+                  <Project />
                   <Contact />
                   <ContactAss />
                 </>
