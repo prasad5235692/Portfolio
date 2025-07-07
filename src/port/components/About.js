@@ -14,12 +14,18 @@ const About = () => {
       <h2><span style={{ color: '#d28203' }}>About</span> Me</h2>
       <div className="about-container">
         {/* Profile Image */}
-        <div className="about-img">
+        <div data-aos="fade-right"
+     data-aos-offset="300"
+     data-aos-easing="ease-in-sine"
+     data-aos-duration="1000" className="about-img">
           <img src={profileImage} alt="Prasad" />
         </div>
 
         {/* About Text */}
-        <div className="about-text">
+        <div data-aos="fade-left"
+     data-aos-anchor="#example-anchor"
+     data-aos-offset="500"
+     data-aos-duration="2500"className="about-text">
           <p>
             I'm <strong>Prasad</strong>, a passionate <strong>MERN Stack Developer</strong> with a Bachelor's degree in Computer Science from Alagappa University. I've undergone hands-on training in Full Stack Web Development and built multiple mini-projects using React, Node.js, and MongoDB.
           </p>
