@@ -24,7 +24,7 @@ const Education = () => {
       details: [
         { icon: "🏫", label: "T.E.L.C Higher Secondary School" },
         { icon: "📍", label: "Pudukkottai, Tamil Nadu" },
-        { icon: "🎓", label: "Year: 2017" },
+        { icon: "🎓", label: "Year: 2021" },
       ],
     },
     {
