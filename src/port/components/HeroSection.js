@@ -45,7 +45,7 @@ const HeroSection = () => {
      {/* Spline container */}
       <div className="spline-container">
           <div className="absolute bottom-[10%] w-[300px] h-[300px] 
-                  bg-[radial-gradient(circle,rgba(255, 150, 22, 0.96),transparent_70%)]
+                  bg-[radial-gradient(circle,rgb(255, 140, 0),transparent_70%)]
                   blur-[80px] z-0 pointer-events-none" />
          
             <Spline data-aos="fade-zoom-in"

@@ -2,7 +2,7 @@
 .hero-section {
   background-color: #000;
   background: 
-    radial-gradient(ellipse at 75% 0%, rgba(255, 141, 10, 0.801), transparent 40%),
+    radial-gradient(ellipse at 75% 0%, rgb(255, 136, 0), transparent 40%),
     radial-gradient(ellipse at 80% 0%, rgba(0, 0, 0, 0.15), transparent 70%);
   display: flex;
   flex-direction: column-reverse;
