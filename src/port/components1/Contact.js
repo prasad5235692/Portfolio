@@ -52,7 +52,7 @@ const ContactInfoSection = () => {
           <a href="https://github.com/prasad5235692" target="_blank" rel="noreferrer">
             <FontAwesomeIcon icon={faGithub} />
           </a>
-          <a href="https://www.linkedin.com/in/prasad-k-7878b9335/" target="_blank" rel="noreferrer">
+          <a href="https://www.linkedin.com/in/prasad-k-b70677374/" target="_blank" rel="noreferrer">
             <FontAwesomeIcon icon={faLinkedin} />
           </a>
           <a href="https://wa.me/919342936209" target="_blank" rel="noreferrer">
