@@ -54,7 +54,7 @@ const About = () => {
   📄 Download Resume
 </button>
 <button
-  className="nav-button"
+  className="nav1-button"
   onClick={() => {
     window.open("/Prasad K - Resume.pdf", "_blank");
   }}

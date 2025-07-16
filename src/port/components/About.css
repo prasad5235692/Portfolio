@@ -145,7 +145,13 @@
   .about-text p {
     font-size: 1.1rem;
   }
-
+  .nav1-button{
+    left: 290px;
+    top: -79px;
+  }
+.nav-button{
+  right: 15px;
+}
  
   
 }
