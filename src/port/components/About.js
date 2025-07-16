@@ -40,7 +40,31 @@ const About = () => {
             <li className="li"><strong>📧 Email:</strong> prasad.itwed@gmail.com</li>
           </ul>
 
-          <button className="nav-button" href="/resume.pdf" download >📄 Download Resume</button>
+<button
+  className="nav-button"
+  onClick={() => {
+    const link = document.createElement("a");
+    link.href = "/Prasad K - Resume.pdf";
+    link.setAttribute("download", "Prasad K - Resume.pdf");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }}
+>
+  📄 Download Resume
+</button>
+<button
+  className="nav-button"
+  onClick={() => {
+    window.open("/Prasad K - Resume.pdf", "_blank");
+  }}
+>
+  📄 View Resume
+</button>
+
+
+
+
         </div>
       </div>
     </section>
