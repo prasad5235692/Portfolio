@@ -30,12 +30,12 @@ const About = () => {
             I'm <strong>Prasad</strong>, a passionate <strong>MERN & MARN  Stack Developer</strong> with a Bachelor's degree in Computer Science from Alagappa University. I've undergone hands-on training in Full Stack Web Development and built multiple mini-projects using React, Node.js, and MongoDB.
           </p>
           <p>
-            I specialize in building full-stack web applications using the <strong>MERN & MARN</strong> stack. My focus is on writing clean, efficient code and creating user-centric designs. I'm enthusiastic about collaborating on real-world projects and continuously expanding my technical skill set.
+            I specialize in building full-stack web applications using the <strong>MERN</strong> stack. My focus is on writing clean, efficient code and creating user-centric designs. I'm enthusiastic about collaborating on real-world projects and continuously expanding my technical skill set.
           </p>
 
           <ul className="about-info">
             <li className="li"><strong>🎓 Degree:</strong> B.Sc Computer Science</li>
-            <li className="li"><strong>🌐 Specialization:</strong> Full Stack Web Development (MERN)</li>
+            <li className="li"><strong>🌐 Specialization:</strong> Full Stack Web Development (MERN & MARN)</li>
             <li className="li"><strong>📍 Location:</strong> Pudukkottai, Tamil Nadu, India</li>
             <li className="li"><strong>📧 Email:</strong> prasad.itwed@gmail.com</li>
           </ul>
