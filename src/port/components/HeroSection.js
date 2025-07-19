@@ -50,7 +50,7 @@ const HeroSection = () => {
          
             <Spline data-aos="fade-zoom-in"
      data-aos-easing="ease-in-back"
-     data-aos-delay="500"
+     data-aos-delay="100"
      data-aos-offset="0"
               scene="https://prod.spline.design/Z2AEf5-3ohW3XiFM/scene.splinecode"
             />
