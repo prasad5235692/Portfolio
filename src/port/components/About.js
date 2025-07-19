@@ -27,7 +27,7 @@ const About = () => {
      data-aos-offset="500"
      data-aos-duration="2500"className="about-text">
           <p>
-            I'm <strong>Prasad</strong>, a passionate <strong>MERN Stack Developer</strong> with a Bachelor's degree in Computer Science from Alagappa University. I've undergone hands-on training in Full Stack Web Development and built multiple mini-projects using React, Node.js, and MongoDB.
+            I'm <strong>Prasad</strong>, a passionate <strong> MARN & MERN Stack Developer</strong> with a Bachelor's degree in Computer Science from Alagappa University. I've undergone hands-on training in Full Stack Web Development and built multiple mini-projects using React, Node.js, and MongoDB.
           </p>
           <p>
             I specialize in building full-stack web applications using the <strong>MERN</strong> stack. My focus is on writing clean, efficient code and creating user-centric designs. I'm enthusiastic about collaborating on real-world projects and continuously expanding my technical skill set.
