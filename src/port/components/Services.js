@@ -1,5 +1,5 @@
-import { IoLogoHtml5 } from "react-icons/io";
 import { DiJavascript } from "react-icons/di";
+import { FaAngular } from "react-icons/fa";
 import { FaReact, FaBootstrap, FaJava, FaGithub } from "react-icons/fa6";
 import { IoLogoNodejs } from "react-icons/io5";
 import { TbBrandMongodb } from "react-icons/tb";
@@ -21,9 +21,9 @@ function Services() {
         <div className="service-box">
           Frontend (Client-Side)
           <ul>
-            <li><IoLogoHtml5 /> HTML, CSS</li>
-            <li><DiJavascript /> JavaScript</li>
-            <li><FaReact /> React.js</li>
+            <li><FaReact />React+vite</li>
+            <li><FaAngular />Angular</li>
+            <li> <DiJavascript />JavaScript </li>
             <li><FaBootstrap /> Bootstrap</li>
           </ul>
         </div>
@@ -40,6 +40,7 @@ function Services() {
           <ul>
             <li><TbBrandMongodb /> MongoDB With Mongoose</li>
             <li><GrMysql /> MySQL</li>
+            <li><FaJava /> Java</li>
           </ul>
         </div>
         <div className="service-box">

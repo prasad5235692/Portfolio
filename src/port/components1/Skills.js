@@ -11,7 +11,7 @@ import {
 import "./Skills.css";
 
 const skillsData = [
-  { icon: <FaPaintBrush />, title: "Frontend", tools: "HTML, CSS, JS, React" },
+  { icon: <FaPaintBrush />, title: "Frontend", tools: "React, Angular, JavaScript, TypeScript" },
   { icon: <FaCubes />, title: "Frameworks", tools: "Tailwind, Bootstrap, Spline" },
   { icon: <FaServer />, title: "Backend", tools: "Node.js, Java, Express.js" },
   { icon: <FaDatabase />, title: "Database", tools: "MongoDB, MySQL" },

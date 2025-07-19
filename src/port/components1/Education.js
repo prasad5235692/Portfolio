@@ -41,7 +41,7 @@ const Education = () => {
       image: img3,
       details: [
         { icon: "💻", label: "Full Stack Development" },
-        { icon: "🛠️", label: "Tech: MERN STACK" },
+        { icon: "🛠️", label: "Tech: MERN & MARN STACK" },
         { icon: "📅", label: "6 Months + 6 Months Internship" },
       ],
     },
