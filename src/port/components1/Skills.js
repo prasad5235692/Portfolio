@@ -16,7 +16,7 @@ const skillsData = [
   { icon: <FaServer />, title: "Backend", tools: "Node.js, Java, Express.js" },
   { icon: <FaDatabase />, title: "Database", tools: "MongoDB, MySQL" },
   { icon: <FaTools />, title: "Tools", tools: "GitHub, VS Code, Eclipse" },
-  { icon: <FaRocket />, title: "Fullstack", tools: "MERN Stack" },
+  { icon: <FaRocket />, title: "Fullstack", tools: "MERN & MARN Stack" },
 ];
 
 const Skills = () => {
