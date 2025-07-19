@@ -31,7 +31,7 @@ function Services() {
           Backend (Server-Side)
           <ul>
             <li><IoLogoNodejs /> Node.js</li>
-            <li><FaJava /> JAVA</li>
+            <li><FaJava /> Java</li>
             <li><SiExpress /> Express.js</li>
           </ul>
         </div>
