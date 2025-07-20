@@ -44,17 +44,15 @@ const HeroSection = () => {
  
      {/* Spline container */}
       <div className="spline-container">
-          <div className="absolute bottom-[10%] w-[300px] h-[300px] 
-                  bg-[radial-gradient(circle,rgb(255, 140, 0),transparent_70%)]
-                  blur-[80px] z-0 pointer-events-none" />
          
-            <Spline data-aos="fade-zoom-in"
+         
+            <Spline  data-aos="fade-zoom-in"
      data-aos-easing="ease-in-back"
-     data-aos-delay="100"
+     data-aos-delay="1000"
      data-aos-offset="0"
-              scene="https://prod.spline.design/Z2AEf5-3ohW3XiFM/scene.splinecode"
-            />
-        
+     data-aos-duration="3500"
+            scene="https://prod.spline.design/1nwtrf4vAOpxXoeA/scene.splinecode"
+      />
         </div>
       </div>
      
