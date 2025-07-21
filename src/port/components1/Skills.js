@@ -16,7 +16,7 @@ const skillsData = [
   { icon: <FaServer />, title: "Backend", tools: "Node.js, Java, Express.js" },
   { icon: <FaDatabase />, title: "Database", tools: "MongoDB, MySQL" },
   { icon: <FaTools />, title: "Tools", tools: "GitHub, VS Code, Eclipse" },
-  { icon: <FaRocket />, title: "Fullstack", tools: "MERN & MARN Stack" },
+  { icon: <FaRocket />, title: "Fullstack", tools: "MERN & MEAN Stack" },
 ];
 
 const Skills = () => {
@@ -38,7 +38,7 @@ const Skills = () => {
       style={{ marginTop: "50px" }} // 👈 Add this inline to offset the fixed header
     >
       <h2 ><span style={{ color: '#d28203' }}>TECH </span>STACK</h2>
-      <p className="modern-skills-title1">Strong in JavaScript, React.js, Node.js, Express.js, and MongoDB. Experienced in building RESTful APIs, responsive frontends, and scalable backend systems. Familiar with Git, Postman, and modern UI frameworks like Tailwind CSS.</p>
+      <p className="modern-skills-title1">Strong in JavaScript,TypeScript,Angular, React, Node.js, Express.js, and MongoDB. Experienced in building RESTful APIs, responsive frontends, and scalable backend systems. Familiar with Git, Postman, and modern UI frameworks like Tailwind CSS.</p>
       <div className="modern-skills-grid">
         {skillsData.map((item, idx) => (
           <div key={idx} className="modern-skill-card">
