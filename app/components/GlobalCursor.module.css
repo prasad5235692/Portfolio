@@ -1,0 +1,68 @@
+/* ── Cursor shell ──────────────────────────────────────────────── */
+/*
+ * The cursor is a fixed 150 × 150 px circle. GSAP applies a CSS
+ * transform: scale() so it appears as:
+ *   • ~18 px dot at rest          (scale ≈ 0.12)
+ *   • 150 px labelled circle      (scale = 1 ,  data-cursor-label hover)
+ *   • 480 px backdrop for clip    (scale ≈ 3.2,  cursor:expand event)
+ *
+ * overflow: hidden  ➜  label text is clipped naturally by the circle
+ * border-radius at layout size combines with overflow to give the pill
+ * shape at every scale — no separate mask needed.
+ */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Label container (lives inside the circle) ───────────────── */
+.label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: #000000;
+  font-family: var(--font-inter);
+  text-transform: uppercase;
+  user-select: none;
+
+  transform: scale(0.72);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cursor.expanded .label {
+  transform: scale(1);
+}
+
+/* VIEW — bold, slightly larger */
+.view {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.1;
+}
+
+/* MORE — bold, slightly smaller */
+.more {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+}

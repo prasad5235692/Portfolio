@@ -1,0 +1,400 @@
+/* ═══════════════════════════════════════════════════════════════
+   CLIENTS — 3D Tunnel Scroll
+   Scoped classes used in JSX; global classes used on imperatively
+   created DOM elements inside useEffect.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Section wrapper: height is set dynamically by JS (one pass) ── */
+.section {
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+    color: var(--text-primary);
+}
+
+/* ── Sticky screen: sticks to viewport top while scrolling ──── */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+  color: var(--text-primary);
+}
+
+/* ── Scanline overlay ───────────────────────────────────────── */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  /* background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.2)
+  ); */
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── Vignette overlay ───────────────────────────────────────── */
+.vignette {
+display: none;
+
+}
+
+/* ── Noise overlay ──────────────────────────────────────────── */
+.noise {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  opacity: 0.07;
+  pointer-events: none;
+  /* background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); */
+}
+
+/* ── HUD ────────────────────────────────────────────────────── */
+.hud {
+  position: absolute;
+  inset: 2rem;
+  z-index: 20;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font-inter);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hudTop,
+.hudBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hud strong {
+  color: #dddddd;
+}
+
+.hudLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 1rem;
+  position: relative;
+}
+
+.hudLine::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  background: #ff003c;
+}
+
+.hudVel {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  align-self: flex-start;
+  margin: auto 0;
+}
+
+/* ── 3D Viewport ────────────────────────────────────────────── */
+.viewport {
+  position: absolute;
+  inset: 0;
+  perspective: 1000px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* ── World: zero-size anchor at centre of viewport ──────────── */
+.world {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL styles — applied to imperatively created DOM elements
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Wrapper for every 3D item ────────────────────────────────── */
+:global(.tunnel-item) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  backface-visibility: hidden;
+  transform-origin: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+/* ── Big-text headings ────────────────────────────────────────── */
+:global(.tunnel-big-text) {
+  font-size: 15vw;
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15);
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  letter-spacing: -0.5rem;
+  mix-blend-mode: overlay;
+  font-family: var(--font-inter);
+}
+
+/* ── Star particles ───────────────────────────────────────────── */
+:global(.tunnel-star) {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Project card ─────────────────────────────────────────────── */
+:global(.tunnel-card) {
+  width: 580px;
+  height: 840px;
+  background: rgba(10, 10, 10, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    0 20px 50px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+:global(.tunnel-card.hover-active) {
+  border-color: #ff003c;
+  box-shadow: 0 0 30px rgba(255, 0, 60, 0.2);
+  background: rgba(20, 20, 20, 0.8);
+}
+
+:global(.tunnel-card::before),
+:global(.tunnel-card::after) {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1px solid transparent;
+  transition: 0.3s;
+}
+
+:global(.tunnel-card::before) {
+  top: -1px;
+  left: -1px;
+  border-top-color: #e0e0e0;
+  border-left-color: #e0e0e0;
+}
+
+:global(.tunnel-card::after) {
+  bottom: -1px;
+  right: -1px;
+  border-bottom-color: #e0e0e0;
+  border-right-color: #e0e0e0;
+}
+
+:global(.tunnel-card.hover-active::before),
+:global(.tunnel-card.hover-active::after) {
+  width: 100%;
+  height: 100%;
+  border-color: #ff003c;
+}
+
+/* ── Card header ──────────────────────────────────────────────── */
+:global(.tunnel-card-header) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+:global(.tunnel-card-id) {
+  font-family: var(--font-inter);
+  color: #ff003c;
+  font-size: 0.8rem;
+}
+
+:global(.tunnel-card-year) {
+  font-family: var(--font-inter);
+  color: #dddddd;
+  font-size: 0.8rem;
+}
+
+/* ── Card title ───────────────────────────────────────────────── */
+:global(.tunnel-card h2) {
+  font-size: 4.5rem;
+  line-height: 0.9;
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #fff;
+  mix-blend-mode: hard-light;
+  font-family: var(--font-inter);
+}
+
+:global(.tunnel-title-alt) {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+  font-size: 4rem;
+}
+
+/* ── Card body ────────────────────────────────────────────────── */
+:global(.tunnel-card-category) {
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+:global(.tunnel-card-desc) {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0.75rem 0;
+  font-family: var(--font-inter);
+}
+
+:global(.tunnel-card video) {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0;
+  display: block;
+}
+
+/* ── Tags ─────────────────────────────────────────────────────── */
+:global(.tunnel-card-tags) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+
+:global(.tunnel-card-tag) {
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  padding: 2px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Card footer / link ───────────────────────────────────────── */
+:global(.tunnel-card-footer) {
+  margin-top: auto;
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  justify-content: space-between;
+}
+
+:global(.tunnel-card-link) {
+  font-size: 1rem;
+  color: #dddddd;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+:global(.tunnel-card-link:hover) {
+  text-decoration: underline;
+}
+
+/* ── Section label — desktop position preserved; only offset shrinks below ── */
+.projectsLabel {
+  position: absolute;
+  top: 2.5rem;
+  left: 15rem;
+  z-index: 10;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — same tunnel/card concept, viewport-scaled dimensions.
+   Desktop (min-width: 1025px) is untouched; only smaller breakpoints
+   shrink the existing card so it stays inside the viewport.
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .projectsLabel { left: 6rem; }
+
+  :global(.tunnel-card) {
+    width: 460px;
+    height: 680px;
+    padding: 2rem;
+  }
+  :global(.tunnel-card h2) { font-size: 3.4rem; }
+  :global(.tunnel-title-alt) { font-size: 3rem; }
+  :global(.tunnel-card-desc) { font-size: 1.05rem; }
+  :global(.tunnel-card video) { height: 260px; }
+  :global(.tunnel-big-text) { letter-spacing: -0.3rem; }
+  .hud { inset: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+  .projectsLabel { left: 2.5rem; top: 1.75rem; }
+
+  :global(.tunnel-card) {
+    width: 340px;
+    height: 560px;
+    padding: 1.5rem;
+  }
+  :global(.tunnel-card-header) { padding-bottom: 0.75rem; margin-bottom: 0.75rem; }
+  :global(.tunnel-card h2) { font-size: 2.4rem; }
+  :global(.tunnel-title-alt) { font-size: 2.1rem; }
+  :global(.tunnel-card-category) { font-size: 0.8rem; }
+  :global(.tunnel-card-desc) { font-size: 0.92rem; line-height: 1.4; }
+  :global(.tunnel-card video) { height: 190px; }
+  :global(.tunnel-card-tag) { font-size: 0.75rem; padding: 2px 6px; }
+  :global(.tunnel-card-footer),
+  :global(.tunnel-card-link) { font-size: 0.85rem; }
+  :global(.tunnel-big-text) { letter-spacing: -0.15rem; }
+  .hud { inset: 1.25rem; font-size: 9px; }
+}
+
+@media (max-width: 480px) {
+  .projectsLabel { left: 1.25rem; top: 1.25rem; }
+
+  :global(.tunnel-card) {
+    width: min(86vw, 300px);
+    height: 500px;
+    padding: 1.25rem;
+  }
+  :global(.tunnel-card-header) { padding-bottom: 0.6rem; margin-bottom: 0.6rem; }
+  :global(.tunnel-card h2) { font-size: 2rem; }
+  :global(.tunnel-title-alt) { font-size: 1.7rem; }
+  :global(.tunnel-card-category) { font-size: 0.72rem; }
+  :global(.tunnel-card-desc) { font-size: 0.85rem; line-height: 1.35; }
+  :global(.tunnel-card video) { height: 150px; }
+  :global(.tunnel-card-tags) { gap: 0.3rem; }
+  :global(.tunnel-card-tag) { font-size: 0.68rem; padding: 2px 6px; }
+  :global(.tunnel-card-footer),
+  :global(.tunnel-card-link) { font-size: 0.78rem; }
+  .hud { inset: 1rem; font-size: 8px; }
+}

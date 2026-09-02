@@ -1,0 +1,55 @@
+/* ─── Scene container ─────────────────────────────────────────── */
+.scene {
+  position: relative;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─── Shared type styles ──────────────────────────────────────── */
+.text {
+  font-family: var(--font-inter);
+  font-size: clamp(72px, 13vw, 152px);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  /* 0.82 ≈ Bebas Neue cap-height ratio — rows stack flush with no gap */
+  line-height: 0.82;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* ─── Each row ────────────────────────────────────────────────── */
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.22em;
+  justify-content: center;
+}
+
+/* ─── Layer A — glass text, page background ───────────────────── */
+.layerA {
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+  background-color: #06060f;
+}
+
+/* .word marks interactive spans in Layer A only */
+.word {
+  cursor: none;
+}
+
+/* ─── Layer B — no background, black text, revealed by cursor ── */
+.layerB {
+  position: absolute;
+  inset: 0;
+  /* Must be above GlobalCursor (z-index 9999) so black text renders */
+  /* on top of the red cursor circle inside the clip-path window     */
+  z-index: 10000;
+  color: #000000;
+  pointer-events: none;
+  /* starts fully hidden; updated every GSAP tick */
+  clip-path: circle(0px at -500px -500px);
+  overflow: hidden;
+}
