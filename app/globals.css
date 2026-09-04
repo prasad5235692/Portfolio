@@ -742,102 +742,400 @@ body.no-scroll {
 
 }
 
+/* ==========================================================
+   RESPONSIVE MOBILE HERO
+   ========================================================== */
+
 @media (max-width: 860px) {
+
   .hero-shell {
-    min-height: 100svh;
+    position: relative;
     width: 100%;
+    min-height: 100svh;
+    height: auto;
     overflow: hidden;
+    padding: 0 !important;
   }
 
   .hero-grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    position: relative;
     width: 100%;
-    min-height: calc(100svh - 80px);
-    gap: 0;
-    padding: 24px 0 40px;
+    min-height: 100svh;
+    height: auto;
+
+    display: block;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: visible;
   }
 
+  /* ========================================================
+     TITLE
+     ======================================================== */
+
   .hero-left {
-    order: 1;
+    position: absolute;
+
+    top: clamp(72px, 10svh, 90px);
+    left: 0;
+
     width: 100%;
-    min-height: auto;
+    height: auto;
+    min-height: 0 !important;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
     text-align: center;
+
+    z-index: 10;
   }
 
   .hero-copy-block {
     width: 100%;
+
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+
+    gap: clamp(8px, 1.5vw, 12px);
+
     text-align: center;
   }
 
   .hero-kicker {
+    display: block;
+
     font-size: clamp(9px, 2.8vw, 12px);
-    letter-spacing: clamp(0.25em, 1vw, 0.4em);
+
+    line-height: 1;
+
+    letter-spacing: clamp(
+      0.25em,
+      1vw,
+      0.4em
+    );
+
     text-align: center;
+
     white-space: nowrap;
   }
 
   .hero-heading {
     width: 100%;
     max-width: none;
-    font-size: clamp(2.7rem, 13vw, 4.5rem);
+
+    margin: 0;
+
+    font-size: clamp(
+      2.45rem,
+      13.5vw,
+      3.8rem
+    );
+
     line-height: 0.9;
+
     letter-spacing: 0;
+
     text-align: center;
   }
 
   .hero-heading span {
+    display: block;
     text-align: center;
   }
 
+
+  /* ========================================================
+     MOON
+     ======================================================== */
+
   .hero-canvas-column {
-    order: 2;
+    position: absolute;
+
+    /*
+      Dynamic vertical position.
+      Title height is different on different phones,
+      so don't use one hard-coded value.
+    */
+    top: clamp(
+      190px,
+      25svh,
+      225px
+    );
+
+    left: 0;
+
     width: 100%;
+
+    height: auto;
+
+    margin: 0 !important;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: clamp(28px, 7vw, 52px);
+
+    z-index: 2;
+
+    pointer-events: none;
   }
 
   .hero-canvas-mount {
-    width: clamp(260px, 78vw, 380px);
-    height: clamp(260px, 78vw, 380px);
-    aspect-ratio: 1;
+    /*
+      Moon adapts to BOTH width and screen height.
+
+      This prevents:
+      - iPhone 14 moon becoming too large
+      - Samsung short-screen overlap
+      - very small phones breaking layout
+    */
+    width: min(
+      78vw,
+      40svh,
+      330px
+    );
+
+    height: min(
+      78vw,
+      40svh,
+      330px
+    );
+
+    min-width: 245px;
+    min-height: 245px;
+
+    max-width: 330px;
+    max-height: 330px;
+
+    aspect-ratio: 1 / 1;
+
     flex-shrink: 0;
+
     margin: 0 auto;
   }
 
+
+  /* ========================================================
+     DESCRIPTION
+     ======================================================== */
+
   .hero-right {
-    order: 3;
+    position: absolute;
+
+    /*
+      IMPORTANT:
+      Body position is calculated from moon position + moon size.
+
+      Moon:
+      top = clamp(...)
+      size = min(78vw, 40svh, 330px)
+
+      Body starts AFTER moon + safe gap.
+    */
+    top: calc(
+      clamp(190px, 25svh, 225px)
+      +
+      min(78vw, 40svh, 330px)
+      +
+      clamp(24px, 4svh, 42px)
+    );
+
+    left: 0;
+
     width: 100%;
-    min-height: auto;
+
+    height: auto;
+
+    min-height: 0 !important;
+
     display: flex;
+
+    align-items: flex-start;
     justify-content: center;
-    align-items: center;
+
+    margin: 0 !important;
+
+    padding: 0 16px;
+
     text-align: center;
-    margin-top: clamp(24px, 6vw, 44px);
+
+    z-index: 10;
   }
 
   .hero-body {
-    width: min(100%, 340px);
-    max-width: 340px;
+    width: min(
+      88vw,
+      330px
+    );
+
+    max-width: 330px;
+
     padding: 0;
+
     margin: 0 auto;
-    font-size: clamp(0.88rem, 3.8vw, 1rem);
+
+    font-size: clamp(
+      0.86rem,
+      3.6vw,
+      0.94rem
+    );
+
     line-height: 1.65;
+
     text-align: center;
+
     text-wrap: balance;
+
+    color: rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
   }
 }
 
+
+/* ==========================================================
+   SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+  .hero-left {
+    top: clamp(
+      72px,
+      10svh,
+      82px
+    );
+  }
+
+  .hero-heading {
+    font-size: clamp(
+      2.45rem,
+      13.5vw,
+      3.7rem
+    );
+
+    line-height: 0.9;
+  }
+
+  .hero-canvas-column {
+    top: clamp(
+      185px,
+      25svh,
+      210px
+    );
+  }
+
+  .hero-canvas-mount {
+    width: min(
+      78vw,
+      40svh,
+      315px
+    );
+
+    height: min(
+      78vw,
+      40svh,
+      315px
+    );
+
+    min-width: 245px;
+    min-height: 245px;
+
+    max-width: 315px;
+    max-height: 315px;
+  }
+
+  .hero-right {
+    top: calc(
+      clamp(185px, 25svh, 210px)
+      +
+      min(78vw, 40svh, 315px)
+      +
+      clamp(24px, 4svh, 38px)
+    );
+  }
+
+  .hero-body {
+    width: min(
+      88vw,
+      325px
+    );
+
+    max-width: 325px;
+
+    font-size: 0.90rem;
+
+    line-height: 1.65;
+  }
+}
+
+
+/* ==========================================================
+   VERY SMALL / SHORT PHONES
+   ========================================================== */
+
+@media (max-width: 380px) {
+
+  .hero-left {
+    top: 72px;
+  }
+
+  .hero-heading {
+    font-size: 2.35rem;
+    line-height: 0.9;
+  }
+
+  .hero-canvas-column {
+    top: 185px;
+  }
+
+  .hero-canvas-mount {
+    width: min(
+      78vw,
+      40svh,
+      275px
+    );
+
+    height: min(
+      78vw,
+      40svh,
+      275px
+    );
+
+    min-width: 235px;
+    min-height: 235px;
+
+    max-width: 275px;
+    max-height: 275px;
+  }
+
+  .hero-right {
+    top: calc(
+      185px
+      +
+      min(78vw, 40svh, 275px)
+      +
+      26px
+    );
+  }
+
+  .hero-body {
+    width: 290px;
+    max-width: 290px;
+
+    font-size: 0.84rem;
+
+    line-height: 1.6;
+  }
+}
 @media (max-width: 480px) {
   .hero-grid {
     min-height: calc(100svh - 70px);
