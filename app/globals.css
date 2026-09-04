@@ -102,10 +102,12 @@ body.no-scroll {
   -webkit-text-stroke: 2px rgba(255,255,255,0.2) !important;
   color: transparent;
 }
-.services-row:hover .text-stroke {
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-  -webkit-text-stroke: 2px #000 !important;
+@media (min-width: 768px) {
+  .services-row:hover .text-stroke {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke: 2px #000 !important;
+  }
 }
 /* ===== CURSOR ===== */
 .cursor-dot,
@@ -552,7 +554,11 @@ body.no-scroll {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.services-row:hover .bg-hover-expand,
+@media (min-width: 768px) {
+  .services-row:hover .bg-hover-expand {
+    transform: translateX(-50%) scaleX(1);
+  }
+}
 .history-row:hover .bg-hover-expand,
 .history-row:active .bg-hover-expand {
   transform: translateX(-50%) scaleX(1);
@@ -585,16 +591,48 @@ body.no-scroll {
 /* ── Mobile: skills tap-to-expand (mirrors desktop hover) ── */
 @media (max-width: 767px) {
 
-  /* First row: small top margin for breathing room */
-  #services .relative > .services-row:first-child {
-    margin-top: 12px;
+  /* Reduce section height — no min-h-screen on mobile */
+  #services.section-padding {
+    min-height: auto !important;
   }
 
-  /* Row spacing: compact but not squeezed */
-  #services .services-row {
-    padding-top: 28px !important;
-    padding-bottom: 28px !important;
+  /* Reduce header margin */
+  #services .content-container > .flex {
+    margin-bottom: 16px !important;
   }
+
+  /* First row: small top margin */
+  #services .relative > .services-row:first-child {
+    margin-top: 8px;
+  }
+
+  /* Row spacing: compact */
+  #services .services-row {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+  }
+
+  /* ── Reset stuck :hover / group-hover effects on non-active rows ── */
+
+  /* Title: restore white text */
+  #services .services-row:not(.is-active) h3 > span {
+    color: inherit !important;
+  }
+
+  /* Subtitle: restore text-stroke appearance */
+  #services .services-row:not(.is-active) .text-stroke {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.3) !important;
+  }
+
+  /* Arrow: restore original position/color */
+  #services .services-row:not(.is-active) .srv-arrow {
+    transform: none !important;
+    color: rgba(255,255,255,0.10) !important;
+  }
+
+  /* ── Active row: expand/collapse ── */
 
   /* Description wrapper for expand/collapse */
   #services .srv-desc-wrap {
@@ -625,30 +663,30 @@ body.no-scroll {
     color: #000 !important;
   }
 
-  /* Background expand */
+  /* Active: background expand */
   #services .services-row.is-active .bg-hover-expand {
     transform: translateX(-50%) scaleX(1);
   }
 
-  /* Title text → black */
+  /* Active: title text → black */
   #services .services-row.is-active h3 > span {
     color: #000 !important;
   }
 
-  /* Text-stroke → black */
+  /* Active: text-stroke → black */
   #services .services-row.is-active .text-stroke {
     color: transparent !important;
     -webkit-text-fill-color: transparent !important;
     -webkit-text-stroke: 2px #000 !important;
   }
 
-  /* Arrow animation */
+  /* Active: arrow animation */
   #services .services-row.is-active .srv-arrow {
     transform: translateX(1px) rotate(-45deg) !important;
     color: #000 !important;
   }
 
-  /* Border color */
+  /* Active: border color */
   #services .services-row.is-active {
     border-color: rgba(255, 0, 60, 0.35) !important;
   }
