@@ -1,4 +1,5 @@
 ﻿'use client';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ScrollRevealText from './ScrollRevealText';
 
@@ -38,6 +39,12 @@ const services = [
 const EASE = [0.22, 1, 0.36, 1];
 
 export default function Skills() {
+  const [activeSkill, setActiveSkill] = useState(null);
+
+  const handleSkillClick = (id) => {
+    setActiveSkill(prev => prev === id ? null : id);
+  };
+
   return (
     <section id="services" className="section-padding min-h-screen" style={{ background: 'transparent' }}>
       <div className="content-container">
@@ -66,6 +73,7 @@ export default function Skills() {
         <div className="relative">
           {services.map((s, i) => {
             const isReversed = i % 2 === 0;
+            const isActive = activeSkill === s.id;
             const gridTemplate = isReversed
               ? 'grid-cols-[auto_1fr_1.5fr] md:grid-cols-[auto_1.5fr_2fr]'
               : 'grid-cols-[1.5fr_1fr_auto] md:grid-cols-[2fr_1.5fr_auto]';
@@ -95,17 +103,19 @@ export default function Skills() {
 
             const descCol = (
               <div
-                className="relative z-10 self-center"
+                className="relative z-10 self-center max-md:self-start"
               >
-                <p
-                  className={`srv-desc text-[16px] leading-relaxed max-w-[380px] opacity-100 md:opacity-0 ${isReversed ? 'md:translate-x-5' : 'md:-translate-x-5'} md:group-hover:opacity-100 md:group-hover:translate-x-0 text-[rgba(255,255,255,0.20)] md:group-hover:text-black`}
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    transition: 'opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
-                  }}
-                >
-                  {s.desc}
-                </p>
+                <div className={`srv-desc-wrap${isActive ? ' expanded' : ''}`}>
+                  <p
+                    className={`srv-desc text-[16px] leading-relaxed max-w-[380px] opacity-100 md:opacity-0 ${isReversed ? 'md:translate-x-5' : 'md:-translate-x-5'} md:group-hover:opacity-100 md:group-hover:translate-x-0 text-[rgba(255,255,255,0.20)] md:group-hover:text-black`}
+                    style={{
+                      fontFamily: 'var(--font-inter)',
+                      transition: 'opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
+                    }}
+                  >
+                    {s.desc}
+                  </p>
+                </div>
               </div>
             );
 
@@ -126,10 +136,12 @@ export default function Skills() {
             return (
               <motion.div
                 key={s.id}
-                className="group services-row relative py-[60px] md:py-[116px] border-b cursor-default"
+                className={`group services-row relative py-[18px] md:py-[116px] border-b cursor-default${isActive ? ' is-active' : ''}`}
                 style={{ borderColor: 'var(--line-color)' }}
+                onClick={() => handleSkillClick(s.id)}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                animate={isActive ? { y: -6 } : { y: 0 }}
                 whileHover={{
                   y: -6,
                   borderColor: 'rgba(255, 0, 60, 0.35)',
@@ -171,7 +183,7 @@ export default function Skills() {
                   </span>
                 </div>
 
-                <div className={`grid gap-4 md:gap-10 items-start ${gridTemplate}`}>
+                <div className={`grid gap-2 md:gap-10 items-start ${gridTemplate}`}>
                   {isReversed ? (
                     <>{arrowCol}{descCol}{titleCol}</>
                   ) : (
