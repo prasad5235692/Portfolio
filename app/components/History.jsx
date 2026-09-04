@@ -1,40 +1,70 @@
-'use client';
-import { motion } from 'framer-motion';
+"use client";
+import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const history = [
   {
-    year: 'NOW',
-    title: 'FULL STACK DEVELOPER | AI APPLICATIONS',
-    company: 'APPLOOM TECHNOLOGIES'
+    year: "NOW",
+    title: "FULL STACK & AI APPLICATIONS",
+    company: "APPLOOM TECHNOLOGIES",
   },
   {
-    year: '2025',
-    title: 'FULL STACK DEVELOPER',
-    company: 'TECH MIND INFOTECH'
+    year: "2025",
+    title: "FULL STACK DEVELOPER",
+    company: "TECH MIND INFOTECH",
   },
   {
-    year: '2024',
-    title: 'FLASH DEVELOPER',
-    company: 'TECH MIND INFOTECH'
+    year: "2024",
+    title: "FLASH DEVELOPER",
+    company: "TECH MIND INFOTECH",
   },
   {
-    year: '2023',
-    title: 'FLASH DESIGNER',
-    company: 'TECH MIND INFOTECH'
-  }
+    year: "2023",
+    title: "FLASH DESIGNER",
+    company: "TECH MIND INFOTECH",
+  },
 ];
 
 export default function History() {
+  const [activeHistory, setActiveHistory] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const listRef = useRef(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    const handlePointerDown = (e) => {
+      if (listRef.current && !listRef.current.contains(e.target)) {
+        setActiveHistory(null);
+      }
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, []);
+
+  const handleHistoryClick = (index) => {
+    setActiveHistory((prev) => (prev === index ? null : index));
+  };
+
   return (
     <section
       id="history"
       className="section-padding min-h-screen relative z-20"
-      style={{ background: 'transparent' }}
+      style={{ background: "transparent" }}
     >
       <div className="content-container">
         <motion.p
           className="text-[14px] tracking-[0.4em] uppercase mb-12 font-bold"
-          style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-inter)' }}
+          style={{
+            color: "var(--accent-red)",
+            fontFamily: "var(--font-inter)",
+          }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -43,64 +73,83 @@ export default function History() {
           HISTORY
         </motion.p>
 
-        <div>
-          {history.map((item, i) => (
-            <motion.div
-              key={i}
-              className="history-row group grid grid-cols-[100px_1fr] sm:grid-cols-[180px_1fr] lg:grid-cols-[320px_1fr] items-center border-b gap-4 sm:gap-10 sm:gap-x-16"
-              style={{
-                paddingTop: '50px',
-                paddingBottom: '50px',
-                borderColor: 'var(--line-color)'
-              }}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              whileHover={{
-                y: -6,
-                borderColor: 'rgba(255, 0, 60, 0.35)',
-                boxShadow: '0 20px 50px -12px rgba(0,0,0,0.6)'
-              }}
-              whileTap={{
-                y: -4,
-                borderColor: 'rgba(255, 0, 60, 0.35)',
-                boxShadow: '0 20px 50px -12px rgba(0,0,0,0.6)'
-              }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{
-                default: { delay: i * 0.08, duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-                y: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-                borderColor: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-                boxShadow: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-              }}
-            >
-              <div className="bg-hover-expand" />
-              <div className="flex items-center self-start relative z-10">
-                <span
-                  className="history-year text-[clamp(1.5rem,4vw,3rem)] md:text-5xl tabular-nums text-white/80 group-hover:!text-black group-hover:font-medium"
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    transition: 'color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
-                  }}
-                >
-                  {item.year}
-                </span>
-              </div>
+        <div ref={listRef}>
+          {history.map((item, i) => {
+            const isActive = activeHistory === i;
+            return (
+              <motion.div
+                key={i}
+                className={`history-row group grid grid-cols-[100px_1fr] sm:grid-cols-[180px_1fr] lg:grid-cols-[320px_1fr] items-center border-b gap-4 sm:gap-10 sm:gap-x-16${isActive ? " is-active" : ""}`}
+                style={{
+                  paddingTop: "50px",
+                  paddingBottom: "50px",
+                  borderColor: "var(--line-color)",
+                }}
+                onClick={() => handleHistoryClick(i)}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                animate={isActive ? { y: -6 } : { y: 0 }}
+                whileHover={
+                  isMobile
+                    ? undefined
+                    : {
+                        y: -6,
+                        borderColor: "rgba(255, 0, 60, 0.35)",
+                        boxShadow: "0 20px 50px -12px rgba(0,0,0,0.6)",
+                      }
+                }
+                whileTap={
+                  isMobile
+                    ? undefined
+                    : {
+                        y: -4,
+                        borderColor: "rgba(255, 0, 60, 0.35)",
+                        boxShadow: "0 20px 50px -12px rgba(0,0,0,0.6)",
+                      }
+                }
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  default: {
+                    delay: i * 0.08,
+                    duration: 0.45,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                  y: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                  borderColor: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                  boxShadow: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                }}
+              >
+                <div className="bg-hover-expand" />
+                <div className="flex items-center self-start relative z-10">
+                  <span
+                    className="history-year text-[clamp(1.5rem,4vw,3rem)] md:text-6xl tabular-nums text-white group-hover:!text-black group-hover:font-medium"
+                    style={{
+                      fontFamily: "var(--font-inter)",
+                      transition: "color 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
+                    }}
+                  >
+                    {item.year}
+                  </span>
+                </div>
 
-              <div className="space-y-4 relative z-10">
-                <h4
-                  className="history-title text-[clamp(0.75rem,2vw,1.25rem)] md:text-5xl font-medium text-white/80 group-hover:!text-black group-hover:font-medium"
-                  style={{ transition: 'color 0.45s cubic-bezier(0.22, 1, 0.36, 1)' }}
-                >
-                  {item.title}
-                </h4>
-                <p
-  className="history-company text-[clamp(1.2rem,1.8vw,2rem)] font-black leading-none tracking-[0.08em] uppercase"
->
-  {item.company}
-</p>
-              </div>
-            </motion.div>
-          ))}
+                <div className="space-y-4 relative z-10">
+                  <h4
+                    className="history-title text-[clamp(1.8rem,7vw,3.5rem)] md:text-6xl font-medium text-white group-hover:!text-black group-hover:font-medium"
+                    style={{
+                      fontFamily: "var(--font-inter)",
+                      transition: "color 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
+                    }}
+                  >
+                    {item.title}
+                  </h4>
+
+                  <p className="history-company text-[clamp(0.7rem,2.5vw,1rem)] md:text-4xl font-medium leading-none tracking-[0.35em] uppercase">
+                    {item.company}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

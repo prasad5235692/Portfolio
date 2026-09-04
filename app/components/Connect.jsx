@@ -63,9 +63,9 @@ export default function Connect() {
           {/* Email */}
           <motion.a
             href="mailto:hello@aquadev.site"
-            className="link-hover inline-block text-center py-4"
+            className="connect-email link-hover inline-block text-center py-4"
             style={{
-              fontSize: 'clamp(2rem, 7vw, 7rem)',
+              fontSize: 'clamp(1.8rem, 6vw, 6rem)',
               color: 'var(--accent-light)',
               fontFamily: 'var(--font-inter)',
               borderBottom: '6px solid currentColor',

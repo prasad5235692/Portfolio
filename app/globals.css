@@ -95,7 +95,7 @@ body.no-scroll {
 
 /* ===== TEXT STROKE ===== */
 .text-stroke {
-  -webkit-text-stroke: 1.5px rgba(255,255,255,0.3);
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.8);
   color: transparent;
 }
 .text-stroke-thin {
@@ -538,7 +538,6 @@ body.no-scroll {
   overflow: visible;
   z-index: 1;
 }
-
 .bg-hover-expand {
   position: absolute;
   top: 0;
@@ -554,38 +553,37 @@ body.no-scroll {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (min-width: 768px) {
-  .services-row:hover .bg-hover-expand {
-    transform: translateX(-50%) scaleX(1);
-  }
-}
-.history-row:hover .bg-hover-expand,
-.history-row:active .bg-hover-expand {
-  transform: translateX(-50%) scaleX(1);
-}
-
 .history-company {
   color: transparent;
   -webkit-text-stroke: 1.5px rgba(255,255,255,0.8);
   font-family: var(--font-inter);
-  font-weight: 900;
+  font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
   transition:
     color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     -webkit-text-stroke 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.history-row:hover .history-company,
-.history-row:active .history-company {
-  color: transparent;
-  -webkit-text-stroke: 1.5px #000;
-}
+@media (min-width: 768px) {
+  .services-row:hover .bg-hover-expand {
+    transform: translateX(-50%) scaleX(1);
+  }
 
-.history-row:active .history-year,
-.history-row:active .history-title {
-  color: #000 !important;
+  .history-row:hover .bg-hover-expand {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  .history-row:hover .history-company {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #000;
+  }
+
+  .history-row:hover .history-year,
+  .history-row:hover .history-title {
+    color: #000 !important;
+  }
 }
 
 /* ── Mobile: skills tap-to-expand (mirrors desktop hover) ── */
@@ -612,24 +610,36 @@ body.no-scroll {
     padding-bottom: 24px !important;
   }
 
-  /* ── Reset stuck :hover / group-hover effects on non-active rows ── */
+  /* ── Prevent stuck :hover on touch devices ── */
+  /* On touch, :hover sticks after tap. Force non-active rows to look unhovered. */
 
-  /* Title: restore white text */
+  /* Title: restore white text on non-active rows */
   #services .services-row:not(.is-active) h3 > span {
     color: inherit !important;
   }
 
-  /* Subtitle: restore text-stroke appearance */
+  /* Subtitle: restore original text-stroke on non-active rows */
   #services .services-row:not(.is-active) .text-stroke {
     color: transparent !important;
     -webkit-text-fill-color: transparent !important;
-    -webkit-text-stroke: 1.5px rgba(255,255,255,0.3) !important;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.8) !important;
   }
 
-  /* Arrow: restore original position/color */
+  /* Arrow: restore original transform/color on non-active rows */
   #services .services-row:not(.is-active) .srv-arrow {
     transform: none !important;
     color: rgba(255,255,255,0.10) !important;
+  }
+
+  /* Description: force hidden on non-active rows (override stuck hover) */
+  #services .services-row:not(.is-active) .srv-desc {
+    opacity: 0 !important;
+    color: rgba(255,255,255,0.20) !important;
+  }
+
+  /* Background: force closed on non-active rows (override stuck hover) */
+  #services .services-row:not(.is-active) .bg-hover-expand {
+    transform: translateX(-50%) scaleX(0) !important;
   }
 
   /* ── Active row: expand/collapse ── */
@@ -650,12 +660,6 @@ body.no-scroll {
     grid-template-rows: 1fr;
   }
 
-  /* Hide description by default */
-  #services .services-row .srv-desc {
-    opacity: 0 !important;
-    color: rgba(255,255,255,0.20) !important;
-  }
-
   /* Active: show description */
   #services .services-row.is-active .srv-desc {
     opacity: 1 !important;
@@ -665,7 +669,7 @@ body.no-scroll {
 
   /* Active: background expand */
   #services .services-row.is-active .bg-hover-expand {
-    transform: translateX(-50%) scaleX(1);
+    transform: translateX(-50%) scaleX(1) !important;
   }
 
   /* Active: title text → black */
@@ -689,6 +693,256 @@ body.no-scroll {
   /* Active: border color */
   #services .services-row.is-active {
     border-color: rgba(255, 0, 60, 0.35) !important;
+  }
+
+  /* ── History: mobile tap-to-expand ── */
+
+  /* Non-active: reset stuck hover on history rows */
+  #history .history-row:not(.is-active) .bg-hover-expand {
+    transform: translateX(-50%) scaleX(0) !important;
+  }
+  #history .history-row:not(.is-active) .history-year,
+  #history .history-row:not(.is-active) .history-title {
+    color: rgba(255,255,255,0.8) !important;
+    font-weight: 400 !important;
+  }
+  #history .history-row:not(.is-active) .history-company {
+    color: transparent !important;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.8) !important;
+  }
+
+  /* Active: expand history row */
+  #history .history-row.is-active .bg-hover-expand {
+    transform: translateX(-50%) scaleX(1) !important;
+  }
+  #history .history-row.is-active .history-year,
+  #history .history-row.is-active .history-title {
+    color: #000 !important;
+  }
+  #history .history-row.is-active .history-company {
+    color: transparent !important;
+    -webkit-text-stroke: 1.5px #000 !important;
+  }
+  #history .history-row.is-active {
+    border-color: rgba(255, 0, 60, 0.35) !important;
+  }
+  #history .history-title {
+  font-size: clamp(1.8rem, 7vw, 3.5rem) !important;
+  font-weight: 500 !important;
+  line-height: 0.95 !important;
+}
+
+#history .history-company {
+  font-size: clamp(0.7rem, 2.5vw, 1rem) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.25em !important;
+  line-height: 1.2 !important;
+}
+
+
+}
+
+@media (max-width: 860px) {
+  .hero-shell {
+    min-height: 100svh;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: calc(100svh - 80px);
+    gap: 0;
+    padding: 24px 0 40px;
+  }
+
+  .hero-left {
+    order: 1;
+    width: 100%;
+    min-height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-copy-block {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .hero-kicker {
+    font-size: clamp(9px, 2.8vw, 12px);
+    letter-spacing: clamp(0.25em, 1vw, 0.4em);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .hero-heading {
+    width: 100%;
+    max-width: none;
+    font-size: clamp(2.7rem, 13vw, 4.5rem);
+    line-height: 0.9;
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  .hero-heading span {
+    text-align: center;
+  }
+
+  .hero-canvas-column {
+    order: 2;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: clamp(28px, 7vw, 52px);
+  }
+
+  .hero-canvas-mount {
+    width: clamp(260px, 78vw, 380px);
+    height: clamp(260px, 78vw, 380px);
+    aspect-ratio: 1;
+    flex-shrink: 0;
+    margin: 0 auto;
+  }
+
+  .hero-right {
+    order: 3;
+    width: 100%;
+    min-height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: clamp(24px, 6vw, 44px);
+  }
+
+  .hero-body {
+    width: min(100%, 340px);
+    max-width: 340px;
+    padding: 0;
+    margin: 0 auto;
+    font-size: clamp(0.88rem, 3.8vw, 1rem);
+    line-height: 1.65;
+    text-align: center;
+    text-wrap: balance;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-grid {
+    min-height: calc(100svh - 70px);
+    padding-top: 20px;
+    padding-bottom: 32px;
+  }
+
+  .hero-heading {
+    font-size: clamp(2.55rem, 13.5vw, 3.8rem);
+    line-height: 0.9;
+  }
+
+  .hero-canvas-column {
+    margin-top: 26px;
+  }
+
+  .hero-canvas-mount {
+    width: clamp(270px, 78vw, 330px);
+    height: clamp(270px, 78vw, 330px);
+  }
+
+  .hero-right {
+    margin-top: 26px;
+  }
+
+  .hero-body {
+    width: min(88vw, 330px);
+    max-width: 330px;
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+}
+
+/* ── Touch devices: prevent :hover sticking on services + history rows ── */
+@media (hover: none) and (max-width: 767px) {
+  .services-row:hover,
+  .history-row:hover {
+    background: transparent;
+  }
+  .services-row:hover .bg-hover-expand,
+  .history-row:hover .bg-hover-expand {
+    transform: translateX(-50%) scaleX(0) !important;
+  }
+  .services-row:hover h3 > span {
+    color: inherit !important;
+  }
+  .services-row:hover .text-stroke {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.8) !important;
+  }
+  .services-row:hover .srv-arrow {
+    transform: none !important;
+    color: rgba(255,255,255,0.10) !important;
+  }
+  .services-row:hover .srv-desc {
+    opacity: 0 !important;
+  }
+  .history-row:hover .history-year,
+  .history-row:hover .history-title {
+    color: rgba(255,255,255,0.8) !important;
+    font-weight: 400 !important;
+  }
+  .history-row:hover .history-company {
+    color: transparent !important;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.8) !important;
+  }
+}
+
+/* ===== CONNECT SECTION ===== */
+.connect-email {
+  font-size: clamp(2rem, 7vw, 7rem);
+}
+
+@media (max-width: 767px) {
+  .connect-email {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+}
+
+/* ===== FOOTER ===== */
+@media (max-width: 767px) {
+  .site-footer {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .site-footer .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+  }
+
+  .footer-label {
+    font-size: 12px !important;
+  }
+
+  .footer-copy {
+    font-size: 11px !important;
+  }
+
+  .footer-top {
+    font-size: 13px !important;
   }
 }
 

@@ -1,5 +1,5 @@
 ﻿'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ScrollRevealText from './ScrollRevealText';
 
@@ -40,6 +40,26 @@ const EASE = [0.22, 1, 0.36, 1];
 
 export default function Skills() {
   const [activeSkill, setActiveSkill] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const listRef = useRef(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mq.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  useEffect(() => {
+    const handlePointerDown = (e) => {
+      if (listRef.current && !listRef.current.contains(e.target)) {
+        setActiveSkill(null);
+      }
+    };
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
+  }, []);
 
   const handleSkillClick = (id) => {
     setActiveSkill(prev => prev === id ? null : id);
@@ -70,7 +90,7 @@ export default function Skills() {
           </motion.span>
         </div>
 
-        <div className="relative">
+        <div className="relative" ref={listRef}>
           {services.map((s, i) => {
             const isReversed = i % 2 === 0;
             const isActive = activeSkill === s.id;
@@ -142,12 +162,12 @@ export default function Skills() {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 animate={isActive ? { y: -6 } : { y: 0 }}
-                whileHover={{
+                whileHover={isMobile ? undefined : {
                   y: -6,
                   borderColor: 'rgba(255, 0, 60, 0.35)',
                   boxShadow: '0 20px 50px -12px rgba(0,0,0,0.6)'
                 }}
-                whileTap={{
+                whileTap={isMobile ? undefined : {
                   y: -4,
                   borderColor: 'rgba(255, 0, 60, 0.35)',
                   boxShadow: '0 20px 50px -12px rgba(0,0,0,0.6)'
