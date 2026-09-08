@@ -9,7 +9,7 @@ export default function Footer() {
      
       <div
         className="site-footer section-padding"
-        style={{ borderTop: '1px solid rgba(255, 0, 60, 0.15)', paddingTop: '2rem', paddingBottom: '2rem', background: 'transparent' }}
+        style={{ borderTop: '1px solid rgba(255, 0, 60, 0.15)', background: 'transparent' }}
       >
         <div className="content-container flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2.5">

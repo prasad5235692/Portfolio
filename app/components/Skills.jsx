@@ -30,9 +30,9 @@ const services = [
   },
   {
     id: '05',
-    title: 'WEBAPPS',
+    title: 'CHATBOTS',
     subtitle: 'DEVELOPMENT',
-    desc: 'Custom web applications built with the latest technologies for a seamless user experience.',
+    desc: 'Leveraging artificial intelligence to create intelligent, adaptive, and efficient solutions.',
   },
 ];
 
@@ -70,7 +70,7 @@ export default function Skills() {
       <div className="content-container">
         <div className="flex items-center justify-between mb-16">
           <ScrollRevealText
-            text="SERVICES"
+            text="SKILLS"
             as="p"
             className="text-[14px] tracking-[0.4em] uppercase"
             style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-inter)' }}
@@ -95,11 +95,11 @@ export default function Skills() {
             const isReversed = i % 2 === 0;
             const isActive = activeSkill === s.id;
             const gridTemplate = isReversed
-              ? 'grid-cols-[auto_1fr_1.5fr] md:grid-cols-[auto_1.5fr_2fr]'
-              : 'grid-cols-[1.5fr_1fr_auto] md:grid-cols-[2fr_1.5fr_auto]';
+              ? 'grid-cols-2 md:grid-cols-[auto_1.5fr_2fr]'
+              : 'grid-cols-2 md:grid-cols-[2fr_1.5fr_auto]';
 
             const titleCol = (
-              <div className={`relative z-10 ${isReversed ? 'md:text-right' : ''}`}>
+              <div className={`relative z-10 ${isReversed ? 'text-right' : ''}`}>
             
                 <h3
                   className="text-[clamp(1rem,3.5vw,4.5rem)] font-black leading-none tracking-[0.03em]"
@@ -123,11 +123,11 @@ export default function Skills() {
 
             const descCol = (
               <div
-                className="relative z-10 self-center max-md:self-start"
+                className="relative z-10 self-center w-full min-w-0"
               >
                 <div className={`srv-desc-wrap${isActive ? ' expanded' : ''}`}>
                   <p
-                    className={`srv-desc text-[16px] leading-relaxed max-w-[380px] opacity-100 md:opacity-0 ${isReversed ? 'md:translate-x-5' : 'md:-translate-x-5'} md:group-hover:opacity-100 md:group-hover:translate-x-0 text-[rgba(255,255,255,0.20)] md:group-hover:text-black`}
+                    className={`srv-desc text-[14px] md:text-[16px] leading-[1.4] md:leading-relaxed max-w-[150px] md:max-w-[380px] ${isReversed ? 'text-left' : 'text-right'} opacity-100 md:opacity-0 ${isReversed ? 'md:translate-x-5' : 'md:-translate-x-5'} md:group-hover:opacity-100 md:group-hover:translate-x-0 text-[rgba(255,255,255,0.20)] md:group-hover:text-black`}
                     style={{
                       fontFamily: 'var(--font-inter)',
                       transition: 'opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
@@ -141,7 +141,7 @@ export default function Skills() {
 
             const arrowCol = (
               <span
-                className="srv-arrow shrink-0 text-sm group-hover:translate-x-1 group-hover:-rotate-45 group-hover:text-black"
+                className={`srv-arrow shrink-0 text-sm group-hover:translate-x-1 group-hover:-rotate-45 group-hover:text-black absolute md:relative ${isReversed ? 'right-1 md:right-auto' : 'left-1 md:left-auto'}`}
                 style={{
                   color: 'rgba(255,255,255,0.10)',
                   fontFamily: 'var(--font-inter)',
@@ -203,11 +203,30 @@ export default function Skills() {
                   </span>
                 </div>
 
-                <div className={`grid gap-2 md:gap-10 items-start ${gridTemplate}`}>
+                <span
+                  className={`srv-arrow md:hidden absolute text-sm ${isReversed ? 'left-1' : 'right-1'}`}
+                  style={{
+                    top: '50%',
+                    color: 'rgba(255,255,255,0.10)',
+                    transition: 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
+                  }}
+                >
+                  →
+                </span>
+
+                <div className={`grid gap-2 md:gap-10 items-start ${gridTemplate} ${isReversed ? 'ml-4 md:ml-0' : 'mr-4 md:mr-0'}`}>
                   {isReversed ? (
-                    <>{arrowCol}{descCol}{titleCol}</>
+                    <>
+                      <span className="hidden md:contents">{arrowCol}</span>
+                      {descCol}
+                      {titleCol}
+                    </>
                   ) : (
-                    <>{titleCol}{descCol}{arrowCol}</>
+                    <>
+                      {titleCol}
+                      {descCol}
+                      <span className="hidden md:contents">{arrowCol}</span>
+                    </>
                   )}
                 </div>
               </motion.div>

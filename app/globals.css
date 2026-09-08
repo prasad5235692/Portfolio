@@ -612,6 +612,15 @@ body.no-scroll {
     padding-bottom: 24px !important;
   }
 
+  /* Mobile: absolute arrow stays within row bounds */
+  #services .services-row .srv-arrow {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  #services .services-row.is-active .srv-arrow {
+    transform: translateY(-50%) translateX(1px) rotate(-45deg) !important;
+  }
+
   /* ── Prevent stuck :hover on touch devices ── */
   /* On touch, :hover sticks after tap. Force non-active rows to look unhovered. */
 
@@ -629,7 +638,7 @@ body.no-scroll {
 
   /* Arrow: restore original transform/color on non-active rows */
   #services .services-row:not(.is-active) .srv-arrow {
-    transform: none !important;
+    transform: translateY(-50%) !important;
     color: rgba(255,255,255,0.10) !important;
   }
 
@@ -688,7 +697,7 @@ body.no-scroll {
 
   /* Active: arrow animation */
   #services .services-row.is-active .srv-arrow {
-    transform: translateX(1px) rotate(-45deg) !important;
+    transform: translateY(-50%) translateX(1px) rotate(-45deg) !important;
     color: #000 !important;
   }
 
@@ -746,27 +755,27 @@ body.no-scroll {
 
 /* ── Touch devices: prevent :hover sticking on services + history rows ── */
 @media (hover: none) and (max-width: 767px) {
-  .services-row:hover,
+  .services-row:hover:not(.is-active),
   .history-row:hover {
     background: transparent;
   }
-  .services-row:hover .bg-hover-expand,
+  .services-row:hover:not(.is-active) .bg-hover-expand,
   .history-row:hover .bg-hover-expand {
     transform: translateX(-50%) scaleX(0) !important;
   }
-  .services-row:hover h3 > span {
+  .services-row:hover:not(.is-active) h3 > span {
     color: inherit !important;
   }
-  .services-row:hover .text-stroke {
+  .services-row:hover:not(.is-active) .text-stroke {
     color: transparent !important;
     -webkit-text-fill-color: transparent !important;
     -webkit-text-stroke: 1.5px rgba(255,255,255,0.8) !important;
   }
-  .services-row:hover .srv-arrow {
-    transform: none !important;
+  .services-row:hover:not(.is-active) .srv-arrow {
+    transform: translateY(-50%) !important;
     color: rgba(255,255,255,0.10) !important;
   }
-  .services-row:hover .srv-desc {
+  .services-row:hover:not(.is-active) .srv-desc {
     opacity: 0 !important;
   }
   .history-row:hover .history-year,
@@ -793,11 +802,6 @@ body.no-scroll {
 
 /* ===== FOOTER ===== */
 @media (max-width: 767px) {
-  .site-footer {
-    padding-top: 1.5rem !important;
-    padding-bottom: 1.5rem !important;
-  }
-
   .site-footer .content-container {
     display: flex;
     flex-direction: column;

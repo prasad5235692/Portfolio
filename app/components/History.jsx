@@ -81,8 +81,8 @@ export default function History() {
                 key={i}
                 className={`history-row group grid grid-cols-[100px_1fr] sm:grid-cols-[180px_1fr] lg:grid-cols-[320px_1fr] items-center border-b gap-4 sm:gap-10 sm:gap-x-16${isActive ? " is-active" : ""}`}
                 style={{
-                  paddingTop: "50px",
-                  paddingBottom: "50px",
+                  paddingTop: "64px",
+                  paddingBottom: "64px",
                   borderColor: "var(--line-color)",
                 }}
                 onClick={() => handleHistoryClick(i)}
