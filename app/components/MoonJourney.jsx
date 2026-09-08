@@ -117,6 +117,10 @@ export default function MoonJourney() {
     const isLowEnd = isMobile ||
       (typeof navigator !== 'undefined' && navigator.hardwareConcurrency <= 4);
 
+    // ── Scale multiplier — slightly smaller moon on tablet / mobile ───────────
+    const vw = window.innerWidth;
+    const moonScaleMul = vw >= 1025 ? 1.0 : vw >= 768 ? 0.85 : 0.75;
+
     // ── Renderer — optimized settings ─────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({
       antialias: !isLowEnd,
@@ -252,7 +256,7 @@ export default function MoonJourney() {
 
     // ── State object (GSAP tweens these properties) ──────────────────────────
     const state = {
-      scale: 0.47,
+      scale: 0.47 * moonScaleMul,
       posX: 0,
       lightX: -3.4,
       lightY: 1.3,
@@ -292,14 +296,14 @@ export default function MoonJourney() {
       gsap.fromTo(
         state,
         {
-          scale: 0.47,
+          scale: 0.47 * moonScaleMul,
           posX: 0,
           lightX: -3.4,
           lightY: 1.3,
           lightZ: 3.3,
         },
         {
-          scale: 1.14,
+          scale: 1.14 * moonScaleMul,
           posX: hw * 0.88,
           lightX: -3.9,
           lightY: 1.5,
@@ -317,9 +321,9 @@ export default function MoonJourney() {
       // ── Phase 3 — About → Services: back to normal size, centred ────────────
       gsap.fromTo(
         state,
-        { scale: 1.14, posX: hw * 0.88, lightX: -3.9 },
+        { scale: 1.14 * moonScaleMul, posX: hw * 0.88, lightX: -3.9 },
         {
-          scale: 0.47,
+          scale: 0.47 * moonScaleMul,
           posX: 0,
           lightX: -3.4,
           ease: 'power2.inOut',
@@ -336,9 +340,9 @@ export default function MoonJourney() {
       // ── Phase 4a — Services → Projects: become smaller, centred ──────────────
       gsap.fromTo(
         state,
-        { scale: 0.47, posX: 0, lightX: -3.4 },
+        { scale: 0.47 * moonScaleMul, posX: 0, lightX: -3.4 },
         {
-          scale: 0.25,
+          scale: 0.25 * moonScaleMul,
           posX: 0,
           lightX: -3.4,
           ease: 'power1.out',
@@ -355,9 +359,9 @@ export default function MoonJourney() {
       // ── Phase 4b — Projects: continuous cinematic zoom ──────────────────────
       gsap.fromTo(
         state,
-        { scale: 0.25, posX: 0, lightX: -3.4 },
+        { scale: 0.25 * moonScaleMul, posX: 0, lightX: -3.4 },
         {
-          scale: 1.2,
+          scale: 1.2 * moonScaleMul,
           posX: 0,
           lightX: -3.9,
           ease: 'power1.in',
@@ -374,9 +378,9 @@ export default function MoonJourney() {
       // ── Phase 5 — Experience: left half-moon (shadow stays on right) ─────────
       gsap.fromTo(
         state,
-        { scale: 1.2, posX: 0, lightX: -3.9, lightY: 1.5, lightZ: 3.0 },
+        { scale: 1.2 * moonScaleMul, posX: 0, lightX: -3.9, lightY: 1.5, lightZ: 3.0 },
         {
-          scale: 1.14,
+          scale: 1.14 * moonScaleMul,
           posX: -hw * 0.88,
           lightX: -3.9,
           lightY: 1.5,
@@ -395,9 +399,9 @@ export default function MoonJourney() {
       // ── Phase 6 — History: back to normal centre ────────────────────────────
       gsap.fromTo(
         state,
-        { scale: 1.14, posX: -hw * 0.88, lightX: -3.9 },
+        { scale: 1.14 * moonScaleMul, posX: -hw * 0.88, lightX: -3.9 },
         {
-          scale: 0.47,
+          scale: 0.47 * moonScaleMul,
           posX: 0,
           lightX: -3.4,
           ease: 'power2.inOut',

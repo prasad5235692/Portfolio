@@ -10,12 +10,12 @@ const projectData = [
     year: '2026',
     category: 'AI Platform / Full Stack / Android',
     title: 'SMART AI',
-    titleAlt: 'ASSISTANT',
+    titleAlt: 'OPEN AI',
     desc: 'A complete AI platform with an advanced web application and Android APK. Users can chat with AI, generate content, answer questions, and use multiple AI-powered tools through a modern interface.',
     tags: ['AI', 'React', 'Node.js', 'Express', 'MongoDB', 'Android APK', 'Groq AI'],
     link: 'https://smart-ai-showcase.vercel.app/',
-    video: '/assets/image/homepage/core.mp4',
-    poster: '/assets/image/homepage/core.mp4',
+    video: '/assets/image/moon/projects/AI.png',
+    poster: '/assets/image/moon/projects/AI.png',
   },
   {
     id: '02',
@@ -26,8 +26,8 @@ const projectData = [
     desc: 'An AI-powered e-commerce website where the AI assistant can perform real user actions including product search, create account, login, logout, add to cart, remove from cart, manage profile, update profile, place orders, cancel orders, view cart, and order history.',
     tags: ['React', 'Node.js', 'MongoDB', 'AI Assistant', 'E-Commerce', 'JWT', 'REST API'],
     link: 'https://pickzo.vercel.app/',
-    video: '/assets/image/homepage/core.mp4',
-    poster: '/assets/image/homepage/core.mp4',
+    video: '/assets/image/moon/projects/shop.png',
+    poster: '/assets/image/moon/projects/shop.png',
   },
 ];
 

@@ -115,24 +115,14 @@
     }
   }
 
-  /*
-  ==========================================================
-  MOBILE HERO
-  ==========================================================
-  IMPORTANT:
-  MoonJourney is rendered in a separate fixed canvas.
-  Therefore the placeholder must act only as a POSITION
-  REFERENCE and must not control the visual stacking.
-  ==========================================================
-  */
-
+  /* ── Mobile: fluid 3-zone grid layout (title → moon → body) ── */
   @media (max-width: 860px) {
 
     .hero-shell {
       position: relative;
       width: 100%;
-      height: 100svh;
       min-height: 100svh;
+      min-height: 100dvh;
       overflow: hidden;
       padding: 0 !important;
     }
@@ -140,10 +130,12 @@
     .hero-grid {
       position: relative;
       width: 100%;
-      height: 100svh;
       min-height: 100svh;
+      min-height: 100dvh;
 
-      display: block;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      grid-template-columns: 1fr;
 
       padding: 0 !important;
       margin: 0 !important;
@@ -151,21 +143,11 @@
       overflow: hidden;
     }
 
-    /*
-    ----------------------------------------------------------
-    TITLE
-    ----------------------------------------------------------
-    */
+    /* ── TOP ZONE: title ── */
 
     .hero-left {
-      position: absolute;
-
-      top: 78px;
-      left: 0;
-
+      position: relative;
       width: 100%;
-      height: auto;
-
       min-height: 0 !important;
 
       display: flex;
@@ -173,57 +155,38 @@
       justify-content: center;
 
       text-align: center;
-
       z-index: 10;
+
+      padding-top: clamp(72px, 10svh, 90px);
+      padding-bottom: clamp(12px, 2svh, 24px);
     }
 
     .hero-copy-block {
       width: 100%;
-
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-
       gap: 10px;
-
       text-align: center;
     }
 
     .hero-kicker {
       display: block;
-
       font-size: clamp(9px, 2.8vw, 12px);
-
       line-height: 1;
-
-      letter-spacing: clamp(
-        0.25em,
-        1vw,
-        0.4em
-      );
-
+      letter-spacing: clamp(0.25em, 1vw, 0.4em);
       text-align: center;
-
       white-space: nowrap;
     }
 
     .hero-heading {
       width: 100%;
       max-width: none;
-
       margin: 0;
-
-      font-size: clamp(
-        2.55rem,
-        13.5vw,
-        3.8rem
-      );
-
+      font-size: clamp(2.45rem, 13.5vw, 3.8rem);
       line-height: 0.9;
-
       letter-spacing: 0;
-
       text-align: center;
     }
 
@@ -232,73 +195,41 @@
       text-align: center;
     }
 
-    /*
-    ----------------------------------------------------------
-    MOON REFERENCE
-    ----------------------------------------------------------
-    */
+    /* ── CENTER ZONE: moon ── */
 
     .hero-canvas-column {
-      position: absolute;
-
-      top: 205px;
-      left: 0;
-
+      position: relative;
       width: 100%;
-      height: 330px;
-
-      margin: 0 !important;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
       z-index: 2;
-
       pointer-events: none;
+
+      margin: 0 !important;
     }
 
     .hero-canvas-mount {
-      width: clamp(
-        270px,
-        78vw,
-        330px
-      );
+      width: clamp(250px, 70vw, 330px);
+      height: clamp(250px, 70vw, 330px);
 
-      height: clamp(
-        270px,
-        78vw,
-        330px
-      );
-
-      min-width: 270px;
-      min-height: 270px;
-
+      min-width: 240px;
+      min-height: 240px;
       max-width: 330px;
       max-height: 330px;
 
       aspect-ratio: 1 / 1;
-
       flex-shrink: 0;
-
       margin: 0 auto;
     }
 
-    /*
-    ----------------------------------------------------------
-    DESCRIPTION
-    ----------------------------------------------------------
-    */
+    /* ── BOTTOM ZONE: body ── */
 
     .hero-right {
-      position: absolute;
-
-      top: 560px;
-      left: 0;
-
+      position: relative;
       width: 100%;
-      height: auto;
-
       min-height: 0 !important;
 
       display: flex;
@@ -306,153 +237,23 @@
       justify-content: center;
 
       margin: 0 !important;
+      padding: clamp(4px, 1svh, 12px) 16px 0;
+      padding-bottom: max(clamp(12px, 2svh, 24px), env(safe-area-inset-bottom));
 
       text-align: center;
-
       z-index: 10;
     }
 
     .hero-body {
       width: min(88vw, 330px);
-
       max-width: 330px;
-
       padding: 0;
       margin: 0 auto;
-
-      font-size: 0.92rem;
-
+      font-size: clamp(0.86rem, 3.6vw, 0.92rem);
       line-height: 1.65;
-
       text-align: center;
-
       text-wrap: balance;
-
-      color: rgba(
-        255,
-        255,
-        255,
-        0.72
-      );
-    }
-  }
-
-  /*
-  ==========================================================
-  SMALL MOBILE
-  ==========================================================
-  */
-
-  @media (max-width: 480px) {
-
-    .hero-shell {
-      height: 100svh;
-      min-height: 100svh;
-    }
-
-    .hero-grid {
-      height: 100svh;
-      min-height: 100svh;
-    }
-
-    /*
-    TITLE
-    */
-
-    .hero-left {
-      top: 78px;
-    }
-
-    .hero-kicker {
-      font-size: 10px;
-      letter-spacing: 0.30em;
-    }
-
-    .hero-heading {
-      font-size: clamp(
-        2.55rem,
-        13.5vw,
-        3.7rem
-      );
-
-      line-height: 0.9;
-    }
-
-    /*
-    MOON
-    */
-
-    .hero-canvas-column {
-      top: 205px;
-      height: 320px;
-    }
-
-    .hero-canvas-mount {
-      width: clamp(
-        270px,
-        78vw,
-        310px
-      );
-
-      height: clamp(
-        270px,
-        78vw,
-        310px
-      );
-    }
-
-    /*
-    DESCRIPTION
-    */
-
-    .hero-right {
-      top: 555px;
-    }
-
-    .hero-body {
-      width: min(88vw, 325px);
-
-      max-width: 325px;
-
-      font-size: 0.90rem;
-
-      line-height: 1.65;
-    }
-  }
-
-  /*
-  ==========================================================
-  VERY SMALL PHONES
-  ==========================================================
-  */
-
-  @media (max-width: 380px) {
-
-    .hero-left {
-      top: 75px;
-    }
-
-    .hero-heading {
-      font-size: 2.45rem;
-    }
-
-    .hero-canvas-column {
-      top: 190px;
-    }
-
-    .hero-canvas-mount {
-      width: 270px;
-      height: 270px;
-    }
-
-    .hero-right {
-      top: 520px;
-    }
-
-    .hero-body {
-      width: 290px;
-      max-width: 290px;
-      font-size: 0.86rem;
+      color: rgba(255, 255, 255, 0.72);
     }
   }
 `}</style>
