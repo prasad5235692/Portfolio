@@ -8,8 +8,8 @@ import ScrollRevealText from './ScrollRevealText';
  */
 
 const socials = [
-  { label: 'LinkedIn', url: 'https://linkedin.com' },
-  { label: 'GitHub', url: 'https://github.com' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/prasad-k-b70677374/' },
+  { label: 'GitHub', url: 'https://github.com/prasad5235692' },
 ];
 
 export default function Connect() {
@@ -62,7 +62,7 @@ export default function Connect() {
 
           {/* Email */}
           <motion.a
-            href="mailto:hello@aquadev.site"
+            href="mailto:prasad.itweb@gmail.com"
             className="connect-email link-hover inline-block text-center py-4"
             style={{
               fontSize: 'clamp(1.8rem, 6vw, 6rem)',

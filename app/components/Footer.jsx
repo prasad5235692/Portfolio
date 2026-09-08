@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedinIn, FaWhatsapp } from 'react-icons/fa6';
 
 const footerSocials = [
-  { label: 'LinkedIn', href: 'https://linkedin.com', icon: FaLinkedinIn },
-  { label: 'GitHub', href: 'https://github.com', icon: FaGithub },
-  { label: 'WhatsApp', href: 'https://wa.me/1234567890', icon: FaWhatsapp },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/prasad-k-b70677374/', icon: FaLinkedinIn },
+  { label: 'GitHub', href: 'https://github.com/prasad5235692', icon: FaGithub },
+  { label: 'WhatsApp', href: 'https://wa.me/9342936209', icon: FaWhatsapp },
 ];
 
 export default function Footer() {
