@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 import MoonJourney from './components/MoonJourney';
 import Preloader from './components/Preloader';
 import Navigation from './components/Navigation';
+import BackgroundAudio from './components/BackgroundAudio';
 import Hero from './components/Hero';
 import About from './components/About';
 import Clients from './components/Clients';
@@ -20,6 +21,7 @@ export default function Home() {
     <>
       <Preloader onComplete={handlePreloaderDone} />
       <Navigation visible={preloaderDone} />
+      <BackgroundAudio active={preloaderDone} />
 
       {/* Moon — fixed full-viewport canvas; scroll-driven via GSAP ScrollTrigger */}
       <MoonJourney />

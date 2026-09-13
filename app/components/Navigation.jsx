@@ -139,7 +139,7 @@ function FlipNavButton({ item, isActive, onClick }) {
       onHoverEnd={() => setIsHovered(false)}
       onFocus={() => setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
-      className={`group relative h-[1.05rem] overflow-hidden whitespace-nowrap text-left text-[11px] tracking-[0.34em] ${activeTextClass}`}
+      className={`group relative h-[1.05rem] overflow-hidden whitespace-nowrap text-left text-[12px] tracking-[0.34em] ${activeTextClass}`}
       style={{
         fontFamily: "var(--font-inter)",
         perspective: "900px",
@@ -464,13 +464,20 @@ export default function Navigation({ visible }) {
   return (
     <>
       <style>{`
+        :root {
+          --desktop-nav-rail-inset: 1.5rem;
+          --desktop-nav-rail-width: 4.5rem;
+          --desktop-nav-stack-gap: 0.75rem;
+        }
+
         /* ══ DESKTOP vertical rail — isolated to md+ ══ */
         @media (min-width: 768px) {
           .desktop-side-nav {
             position: fixed;
-            left: 1.5rem;
+            left: var(--desktop-nav-rail-inset);
             top: 1.5rem;
             z-index: 50;
+            width: var(--desktop-nav-rail-width);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -530,7 +537,7 @@ export default function Navigation({ visible }) {
             align-items: center;
             justify-content: center;
             font-family: var(--font-inter);
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: 0.34em;
             text-indent: 0.34em;
             white-space: nowrap;
@@ -547,6 +554,16 @@ export default function Navigation({ visible }) {
             flex-direction: column;
             align-items: center;
             gap: 0;
+          }
+          .desktop-social-rail {
+            left: var(--desktop-nav-rail-inset);
+            bottom: 1.5rem;
+            z-index: 50;
+            width: var(--desktop-nav-rail-width);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--desktop-nav-stack-gap);
           }
           .desktop-progress-pct {
             rotate: -90deg;
@@ -998,7 +1015,7 @@ export default function Navigation({ visible }) {
 
       {/* ── Socials — unchanged bottom-left ── */}
       <motion.div
-        className="fixed bottom-4 left-4 z-50 flex flex-col items-start gap-3 md:bottom-6 md:left-6"
+        className="desktop-social-rail fixed bottom-4 left-4 z-50 flex flex-col items-start gap-3 md:bottom-6 md:left-6"
         initial={{ y: 24, opacity: 0 }}
         animate={{ y: visible ? 0 : 24, opacity: visible ? 1 : 0 }}
         transition={{ delay: 0.12, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
