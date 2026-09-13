@@ -28,6 +28,8 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    width: 100%;
+    min-width: 0;
   }
 
   .hero-left,
@@ -35,6 +37,7 @@
     display: flex;
     align-items: center;
     height: 100%;
+    min-width: 0;
   }
 
   .hero-left {
@@ -76,6 +79,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-width: 0;
   }
 
   .hero-canvas-mount {
@@ -92,7 +96,9 @@
     letter-spacing: 0.01em;
     color: rgba(255,255,255,0.64);
     margin: 0;
-    max-width: 28ch;
+    width: 100%;
+    max-width: none;
+    overflow-wrap: break-word;
     text-wrap: balance;
   }
 

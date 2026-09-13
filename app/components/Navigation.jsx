@@ -7,7 +7,7 @@ import Magnetic, { useMagnetic } from "./Magnetic";
 const navItems = [
   { id: "home", label: "HOME" },
   { id: "about", label: "ABOUT" },
-  { id: "work", label: "WORK" },
+  { id: "work", label: "PROJECTS" },
   { id: "contact", label: "CONTACT" },
 ];
 
@@ -178,169 +178,6 @@ function FlipNavButton({ item, isActive, onClick }) {
   );
 }
 
-/* ── Mobile-only Three.js visual — lazy-initialized, never runs on desktop ── */
-function MobileMenuVisual({ staticFrame = false }) {
-  const mountRef = useRef(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    // Hard gate: never init on desktop viewports
-    if (!window.matchMedia("(max-width: 767px)").matches) return;
-    const mount = mountRef.current;
-    if (!mount) return;
-
-    let cancelled = false;
-    let renderer = null;
-    let rafId = 0;
-    let geometry = null;
-    let geometry2 = null;
-    let material = null;
-    let material2 = null;
-    let onResize = null;
-
-    (async () => {
-      const THREE = await import("three");
-      if (cancelled || !mountRef.current) return;
-
-      const width = mount.clientWidth || 320;
-      const height = mount.clientHeight || 480;
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
-      camera.position.set(0, 0, 9);
-
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.setClearColor(0x000000, 0);
-      renderer.domElement.style.width = "100%";
-      renderer.domElement.style.height = "100%";
-      renderer.domElement.style.display = "block";
-      mount.appendChild(renderer.domElement);
-
-      // Layer 1 — soft white starfield drifting forward (warp / zoom feel)
-      const COUNT = 220;
-      const positions = new Float32Array(COUNT * 3);
-      const speeds = new Float32Array(COUNT);
-      for (let i = 0; i < COUNT; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * 14;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 12;
-        speeds[i] = 0.008 + Math.random() * 0.03;
-      }
-      geometry = new THREE.BufferGeometry();
-      geometry.setAttribute(
-        "position",
-        new THREE.BufferAttribute(positions, 3),
-      );
-      material = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.055,
-        transparent: true,
-        opacity: 0.65,
-        sizeAttenuation: true,
-        depthWrite: false,
-      });
-      const stars = new THREE.Points(geometry, material);
-      scene.add(stars);
-
-      // Layer 2 — red embers, fewer + larger for black/red theme glow
-      const COUNT2 = 70;
-      const positions2 = new Float32Array(COUNT2 * 3);
-      const speeds2 = new Float32Array(COUNT2);
-      for (let i = 0; i < COUNT2; i++) {
-        positions2[i * 3] = (Math.random() - 0.5) * 10;
-        positions2[i * 3 + 1] = (Math.random() - 0.5) * 10;
-        positions2[i * 3 + 2] = (Math.random() - 0.5) * 10;
-        speeds2[i] = 0.012 + Math.random() * 0.04;
-      }
-      geometry2 = new THREE.BufferGeometry();
-      geometry2.setAttribute(
-        "position",
-        new THREE.BufferAttribute(positions2, 3),
-      );
-      material2 = new THREE.PointsMaterial({
-        color: 0xff003c,
-        size: 0.11,
-        transparent: true,
-        opacity: 0.85,
-        sizeAttenuation: true,
-        depthWrite: false,
-      });
-      const embers = new THREE.Points(geometry2, material2);
-      scene.add(embers);
-
-      // Cinematic dolly: start far → ease forward (zoom-in)
-      const targetZ = 5.2;
-      const posAttr = geometry.getAttribute("position");
-      const posAttr2 = geometry2.getAttribute("position");
-
-      const drift = (attr, spd, limit) => {
-        const arr = attr.array;
-        for (let i = 0; i < spd.length; i++) {
-          arr[i * 3 + 2] += spd[i];
-          if (arr[i * 3 + 2] > limit) arr[i * 3 + 2] = -limit;
-        }
-        attr.needsUpdate = true;
-      };
-
-      const tick = () => {
-        camera.position.z += (targetZ - camera.position.z) * 0.055;
-        stars.rotation.y += 0.0012;
-        stars.rotation.x += 0.0004;
-        embers.rotation.y -= 0.0018;
-        embers.rotation.z += 0.0006;
-        drift(posAttr, speeds, 6);
-        drift(posAttr2, speeds2, 5);
-        renderer.render(scene, camera);
-        rafId = requestAnimationFrame(tick);
-      };
-
-      onResize = () => {
-        if (!mountRef.current || !renderer) return;
-        const w = mount.clientWidth || 320;
-        const h = mount.clientHeight || 480;
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h);
-        if (staticFrame) renderer.render(scene, camera);
-      };
-      window.addEventListener("resize", onResize);
-
-      if (staticFrame) {
-        // Reduced motion: single static frame at the settled zoom, no loop
-        camera.position.set(0, 0, targetZ);
-        renderer.render(scene, camera);
-      } else {
-        tick();
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(rafId);
-      if (onResize) window.removeEventListener("resize", onResize);
-      if (renderer) {
-        renderer.dispose();
-        try {
-          renderer.forceContextLoss();
-        } catch {
-          /* noop */
-        }
-        if (renderer.domElement.parentNode === mount) {
-          mount.removeChild(renderer.domElement);
-        }
-      }
-      if (geometry) geometry.dispose();
-      if (geometry2) geometry2.dispose();
-      if (material) material.dispose();
-      if (material2) material2.dispose();
-    };
-  }, [staticFrame]);
-
-  return <div ref={mountRef} className="mnav-three-mount" aria-hidden="true" />;
-}
-
 export default function Navigation({ visible }) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
@@ -350,6 +187,7 @@ export default function Navigation({ visible }) {
   const [isMobile, setIsMobile] = useState(false);
   const reduceMotion = usePrefersReducedMotion();
   const logoRef = useRef(null);
+  const deskListRef = useRef(null);
 
   const scrollProgressRef = useRef(0);
   const activeSectionRef = useRef("home");
@@ -448,6 +286,50 @@ export default function Navigation({ visible }) {
     if (!isMobile && menuOpen) setMenuOpen(false);
   }, [isMobile, menuOpen]);
 
+  /* Desktop vertical nav: reserve each item's own rotated-label height so
+     flex `gap` yields equal text-to-text spacing. The `rotate` property does
+     not affect layout, and labels differ in length (HOME vs PROJECTS), so a
+     single fixed height cannot space them equally — measure the rendered
+     button width (== visual height after -90deg rotation) per item and refit
+     on resize/zoom + font swap. Animations/typography untouched. */
+  useEffect(() => {
+    if (!deskOpen) return;
+    const list = deskListRef.current;
+    if (!list) return;
+    const items = Array.from(list.querySelectorAll(".desktop-v-item"));
+    const fitItem = (item) => {
+      const btn = item.querySelector(".desktop-v-rotate > button");
+      const w = btn ? Math.ceil(btn.scrollWidth) : 0;
+      if (w > 0) {
+        item.style.height = `${w}px`;
+        item.style.minHeight = `${w}px`;
+      }
+    };
+    const fitAll = () => items.forEach(fitItem);
+    fitAll();
+    /* ResizeObserver self-corrects on zoom, font swap, or any width change */
+    let ro = null;
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(fitAll);
+      items.forEach((item) => {
+        const btn = item.querySelector(".desktop-v-rotate > button");
+        if (btn) ro.observe(btn);
+      });
+    }
+    window.addEventListener("resize", fitAll);
+    let fontsAlive = true;
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (fontsAlive) fitAll();
+      }).catch(() => {});
+    }
+    return () => {
+      fontsAlive = false;
+      window.removeEventListener("resize", fitAll);
+      if (ro) ro.disconnect();
+    };
+  }, [deskOpen]);
+
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -455,8 +337,7 @@ export default function Navigation({ visible }) {
 
   const handleMobileNav = (id) => {
     setMenuOpen(false);
-    // Let the zoom-out start before smooth-scrolling
-    setTimeout(() => scrollTo(id), 140);
+    scrollTo(id);
   };
 
   const pct = String(Math.round(scrollProgress)).padStart(2, "0");
@@ -468,6 +349,8 @@ export default function Navigation({ visible }) {
           --desktop-nav-rail-inset: 1.5rem;
           --desktop-nav-rail-width: 4.5rem;
           --desktop-nav-stack-gap: 0.75rem;
+          --desktop-nav-label-span: 4.75rem;
+          --desktop-nav-item-gap: 1.1rem;
         }
 
         /* ══ DESKTOP vertical rail — isolated to md+ ══ */
@@ -492,19 +375,40 @@ export default function Navigation({ visible }) {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: var(--desktop-nav-item-gap);
           }
           .desktop-v-item {
             width: 2rem;
-            height: 4.75rem;
+            height: auto;
+            min-height: 0;
+            padding: 0;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex: 0 0 auto;
+            overflow: visible;
           }
           .desktop-v-rotate {
-            rotate: -90deg;
+            width: max-content;
+            height: 1.05rem;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            rotate: -90deg;
+          }
+          /* Never shrink/clip the flip button: it is a scroll container
+             (overflow-hidden flip window), so flex would otherwise crush long
+             labels (PROJECTS/CONTACT) into the old fixed width. Layout-only;
+             the FlipNavButton hover animation itself is untouched. */
+          .desktop-v-rotate > button {
+            flex: 0 0 auto;
+            min-width: max-content;
+          }
+          .desktop-menu-label-btn,
+          .desktop-v-item button {
+            cursor: pointer;
           }
           /* ── Desktop MENU hover zone — desktop-only, preserves rail ── */
           .desktop-menu-zone {
@@ -647,28 +551,9 @@ export default function Navigation({ visible }) {
           .mnav-backdrop {
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.62);
-          }
-          .mnav-visual {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-          }
-          .mnav-visual::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-              radial-gradient(60% 45% at 50% 30%, rgba(255,0,60,0.16), transparent 70%),
-              radial-gradient(80% 60% at 50% 110%, rgba(255,0,60,0.10), transparent 70%);
-            pointer-events: none;
-          }
-          .mnav-three-mount {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
+            background: rgba(5, 5, 7, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
           }
           .mnav-panel {
             position: relative;
@@ -678,14 +563,13 @@ export default function Navigation({ visible }) {
             overflow-x: hidden;
             overflow-y: auto;
             border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.10);
-            background: rgba(12,12,14,0.55);
-            -webkit-backdrop-filter: blur(22px) saturate(140%);
-            backdrop-filter: blur(22px) saturate(140%);
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(15,15,18,0.62);
+            -webkit-backdrop-filter: blur(24px) saturate(140%);
+            backdrop-filter: blur(24px) saturate(140%);
             box-shadow:
-              0 0 0 1px rgba(255,0,60,0.08),
               0 24px 80px rgba(0,0,0,0.55),
-              0 0 60px rgba(255,0,60,0.12);
+              0 0 0 1px rgba(255,0,60,0.06);
             padding: clamp(1.25rem, 5vw, 2rem);
             overscroll-behavior: contain;
           }
@@ -842,6 +726,7 @@ export default function Navigation({ visible }) {
             {deskOpen && (
               <motion.div
                 id="desktop-nav-list"
+                ref={deskListRef}
                 className="desktop-menu-list desktop-v-list"
                 variants={deskListVariants}
                 initial="closed"
@@ -891,18 +776,13 @@ export default function Navigation({ visible }) {
         MENU
       </motion.button>
 
-      {/* ── MOBILE: full glass modal with Three.js zoom ── */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
+      {/* ── MOBILE: static glass modal — no animation ── */}
+      {menuOpen && (
+          <div
             className="mobile-nav-root md:hidden"
             role="dialog"
             aria-modal="true"
             aria-label="Site navigation"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.28, ease: "easeOut" }}
           >
             {/* Outside-tap layer */}
             <div
@@ -911,42 +791,10 @@ export default function Navigation({ visible }) {
               aria-hidden="true"
             />
 
-            {/* Three.js visual layer — zoom-in on open, zoom-out on close */}
-            <motion.div
-              className="mnav-visual"
-              aria-hidden="true"
-              initial={
-                reduceMotion ? { opacity: 0 } : { scale: 0.82, opacity: 0 }
-              }
-              animate={{ scale: 1, opacity: 1 }}
-              exit={reduceMotion ? { opacity: 0 } : { scale: 0.86, opacity: 0 }}
-              transition={{
-                duration: reduceMotion ? 0.15 : 0.55,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              {isMobile && <MobileMenuVisual staticFrame={reduceMotion} />}
-            </motion.div>
-
             {/* Glass panel */}
-            <motion.div
+            <div
               className="mnav-panel"
               onClick={(e) => e.stopPropagation()}
-              initial={
-                reduceMotion
-                  ? { opacity: 0 }
-                  : { scale: 0.92, y: 28, opacity: 0 }
-              }
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={
-                reduceMotion
-                  ? { opacity: 0 }
-                  : { scale: 0.94, y: 16, opacity: 0 }
-              }
-              transition={{
-                duration: reduceMotion ? 0.15 : 0.45,
-                ease: [0.22, 1, 0.36, 1],
-              }}
             >
               <button
                 type="button"
@@ -959,24 +807,17 @@ export default function Navigation({ visible }) {
 
               <nav aria-label="Mobile" className="mnav-list">
                 {navItems.map((item, i) => (
-                  <motion.button
+                  <button
                     key={item.id}
                     type="button"
                     onClick={() => handleMobileNav(item.id)}
                     className={`mnav-item${activeSection === item.id ? " is-active" : ""}`}
-                    initial={{ y: 18, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{
-                      delay: reduceMotion ? 0 : 0.08 + i * 0.06,
-                      duration: reduceMotion ? 0.15 : 0.4,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
                   >
                     <span className="mnav-index">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="mnav-label">{item.label}</span>
-                  </motion.button>
+                  </button>
                 ))}
               </nav>
 
@@ -992,10 +833,9 @@ export default function Navigation({ visible }) {
                 </span>
                 <span>PK©26</span>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
 
       {/* ── PK logo — unchanged top-right ── */}
       <motion.button
