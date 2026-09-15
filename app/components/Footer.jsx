@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden">
       <motion.div
-        className="border-t border-white/10 bg-white/[0.03] px-6 py-8 backdrop-blur-xl md:px-10 py-10"
+        className="border-t border-white/10 bg-white/[0.03] px-6 py-16 backdrop-blur-xl md:px-10 md:py-16"
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}

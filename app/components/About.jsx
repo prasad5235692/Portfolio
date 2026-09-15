@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useRef, useEffect, Fragment } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
@@ -93,8 +93,8 @@ export default function About() {
         <motion.p
           className="text-[14px] tracking-[0.4em] uppercase mb-10 font-bold"
           style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-inter)' }}
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: -4 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.5 }}
         >

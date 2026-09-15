@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { motion } from 'framer-motion';
 import ScrollRevealText from './ScrollRevealText';
 
@@ -20,8 +20,8 @@ export default function Connect() {
         <motion.p
           className="text-[14px] tracking-[0.4em] uppercase mb-12 font-bold"
           style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-inter)' }}
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: -4 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >

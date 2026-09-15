@@ -12,14 +12,30 @@ const SETTLE_DELAY = 500;
  *
  * - Mounted once (in page.js) so the same <audio> survives scroll navigation
  *   between sections without restarting.
- * - Explicit `landingVisible` gate: audio starts ONLY after the loading screen
- *   is completely finished AND the landing (#home) is actually visible.
+ * - Explicit `landingVisible` gate: audio becomes audible ONLY after the
+ *   loading screen is completely finished AND the landing (#home) is actually
+ *   visible. It stays SILENT during the preloader.
  * - Native `loop` => continuous playback without interruption at track end.
  * - Toggle pauses/resumes (preserves currentTime) so state stays consistent
  *   across sections. Default ON.
- * - Autoplay policies: gesture unlock listeners attach on mount (not only after
- *   a failed play), plus a canplaythrough retry, so the first available user
- *   interaction starts audio while state remains ON.
+ *
+ * ONE normal automatic playback path (no competing play() calls):
+ *   Phase 1 (preloader): the <audio> is rendered ALREADY muted (+ autoPlay),
+ *     so the browser's native muted autoplay starts silent playback on its
+ *     own. JS only enforces the silent state (muted=true, volume=0). If the
+ *     native autoplay has not started, ONE guarded ensureMutedPlayback()
+ *     issues the single muted play() — never while another is in flight.
+ *   Phase 2 (landing): the already-playing element is ONLY unmuted + faded
+ *     to TARGET_VOLUME via goAudible(). No play() call, no currentTime
+ *     reset, no audio.load() on this transition.
+ *   Fallback only: keyboard/click/touch unlock listeners + a canplay
+ *     re-prime (muted, silent) for browsers/networks where even muted
+ *     playback was blocked. They must NOT be the normal fresh-load path.
+ *
+ * TEMPORARY diagnostics: AUDIO_DEBUG + dlog() trace mount / play() resolve /
+ * reject / preloader-done / landing-ready / goAudible / pause / error so a
+ * fresh-load failure can be pinpointed. Delete the block and all dlog calls
+ * once automatic playback is confirmed.
  */
 function SoundFlipLabel({ text }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -94,9 +110,38 @@ export default function BackgroundAudio({ active }) {
   const soundOnRef = useRef(true);
   const landingVisibleRef = useRef(false);
   const hasStartedRef = useRef(false);
-  const playbackPendingRef = useRef(false);
   const primedPlaybackRef = useRef(false);
+  const primeInflightRef = useRef(false);
   const audibleStartedRef = useRef(false);
+  const landingRetryTimeoutsRef = useRef([]);
+
+  // TEMPORARY development diagnostics — delete this block and every dlog()
+  // call below once automatic fresh-load playback is confirmed in-browser.
+  const AUDIO_DEBUG = true;
+  const dlog = useCallback(
+    (phase) => {
+      if (!AUDIO_DEBUG) return;
+      const audio = audioRef.current;
+      try {
+        console.log('[BackgroundAudio]', {
+          phase,
+          paused: audio ? audio.paused : 'no-el',
+          muted: audio ? audio.muted : 'no-el',
+          volume: audio ? audio.volume : 'no-el',
+          readyState: audio ? audio.readyState : 'no-el',
+          currentTime: audio ? audio.currentTime : 'no-el',
+          error: audio && audio.error ? audio.error.code : null,
+          landingVisible: landingVisibleRef.current,
+          hasStarted: hasStartedRef.current,
+          primed: primedPlaybackRef.current,
+          primeInflight: primeInflightRef.current,
+        });
+      } catch {
+        /* logging must never break playback */
+      }
+    },
+    [AUDIO_DEBUG],
+  );
 
   useEffect(() => {
     soundOnRef.current = soundOn;
@@ -105,10 +150,6 @@ export default function BackgroundAudio({ active }) {
   useEffect(() => {
     landingVisibleRef.current = landingVisible;
   }, [landingVisible]);
-
-  useEffect(() => {
-    playbackPendingRef.current = playbackPending;
-  }, [playbackPending]);
 
   const clearFade = useCallback(() => {
     if (fadeTimerRef.current) {
@@ -176,72 +217,110 @@ export default function BackgroundAudio({ active }) {
     unlockAttachedRef.current = false;
   }, []);
 
+  const clearLandingRetries = useCallback(() => {
+    const list = landingRetryTimeoutsRef.current;
+    landingRetryTimeoutsRef.current = [];
+    list.forEach((t) => {
+      try {
+        clearTimeout(t);
+      } catch {
+        /* noop */
+      }
+    });
+  }, []);
+
+  // Central landing transition: the element is ALREADY playing (muted) from
+  // the preloader phase — so this NEVER calls play(). Unmuting an
+  // already-playing element requires no user gesture. Just unmute + fade
+  // to the existing target volume. currentTime is preserved so the same
+  // audio instance continues seamlessly.
+  const goAudible = useCallback(
+    (reason) => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      dlog(`goAudible:${reason}:before`);
+      try {
+        audio.muted = false;
+      } catch {
+        /* noop */
+      }
+      audibleStartedRef.current = true;
+      primedPlaybackRef.current = false;
+      setPlaybackPending(false);
+      fadeTo(TARGET_VOLUME);
+      detachUnlock();
+      clearLandingRetries();
+      dlog(`goAudible:${reason}:after`);
+    },
+    [clearLandingRetries, detachUnlock, dlog, fadeTo],
+  );
+
   const attachUnlock = useCallback(() => {
     if (typeof window === 'undefined') return;
     if (unlockAttachedRef.current) return;
     unlockAttachedRef.current = true;
     const unlock = () => {
       const audio = audioRef.current;
+      if (!audio) return;
+      // Fallback only: the automatic landing transition (goAudible) is the
+      // normal path. This runs solely if even muted playback was blocked.
+      dlog('unlock:gesture-fired');
       if (
-        hasStartedRef.current &&
-        landingVisibleRef.current &&
-        soundOnRef.current &&
-        audio
+        !hasStartedRef.current ||
+        !landingVisibleRef.current ||
+        !soundOnRef.current
       ) {
-        try {
-          if (primedPlaybackRef.current && !audio.paused) {
-            if (!audibleStartedRef.current) {
-              try {
-                audio.currentTime = 0;
-              } catch {
-                /* noop */
-              }
-            }
-            audio.muted = false;
-            audibleStartedRef.current = true;
-            setPlaybackPending(false);
-            fadeTo(TARGET_VOLUME);
-            detachUnlock();
-            return;
-          }
-
-          audio.muted = false;
-          audio.volume = 0;
-          const p = audio.play();
-          if (p && typeof p.then === 'function') {
-            p.then(() => {
-              if (landingVisibleRef.current && soundOnRef.current) {
-                audibleStartedRef.current = true;
-                primedPlaybackRef.current = false;
-                setPlaybackPending(false);
-                fadeTo(TARGET_VOLUME);
-              }
+        dlog('unlock:ignored-pre-landing');
+        return;
+      }
+      if (!audio.paused) {
+        // Already playing (muted phase survived) — unmute + fade, no play()
+        // call, and preserve currentTime (no restart of the instance).
+        goAudible('unlock');
+        return;
+      }
+      // Element is paused (muted playback was blocked) — a muted play() here
+      // runs inside a real user gesture; unmute only after it resolves.
+      try {
+        audio.loop = true;
+        audio.volume = 0;
+        audio.muted = true;
+        dlog('unlock:reprime-play-call');
+        const p = audio.play();
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            dlog('unlock:reprime-play-resolved');
+            if (landingVisibleRef.current && soundOnRef.current) {
+              goAudible('unlock-reprime');
+            } else {
               detachUnlock();
-            }).catch(() => {
+            }
+          }).catch((err) => {
+            dlog(`unlock:reprime-play-rejected:${err && err.name ? err.name : err}`);
+            try {
               audio.muted = true;
-              setPlaybackPending(true);
-              /* still blocked — keep waiting for next gesture */
-            });
-          } else {
-            audibleStartedRef.current = true;
-            primedPlaybackRef.current = false;
-            setPlaybackPending(false);
-            fadeTo(TARGET_VOLUME);
-            detachUnlock();
-          }
-        } catch {
-          audio.muted = true;
-          setPlaybackPending(true);
-          /* keep waiting */
+              audio.volume = 0;
+            } catch {
+              /* noop */
+            }
+            setPlaybackPending(true);
+            /* still blocked — keep waiting for next gesture */
+          });
+        } else if (landingVisibleRef.current && soundOnRef.current) {
+          goAudible('unlock-reprime-sync');
+        } else {
+          detachUnlock();
         }
-      } else if (
-        audio &&
-        !audio.paused &&
-        soundOnRef.current &&
-        landingVisibleRef.current &&
-        !playbackPendingRef.current
-      ) {
-        detachUnlock();
+      } catch {
+        dlog('unlock:reprime-play-threw');
+        try {
+          audio.muted = true;
+          audio.volume = 0;
+        } catch {
+          /* noop */
+        }
+        setPlaybackPending(true);
+        /* keep waiting */
       }
     };
     unlockFnRef.current = unlock;
@@ -249,54 +328,147 @@ export default function BackgroundAudio({ active }) {
     window.addEventListener('touchstart', unlock);
     window.addEventListener('keydown', unlock);
     window.addEventListener('click', unlock);
-  }, [detachUnlock, fadeTo]);
+  }, [detachUnlock, dlog, goAudible]);
 
-  const primeMutedPlayback = useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    try {
-      audio.loop = true;
-    } catch {
-      /* noop */
-    }
+  // THE single function that guarantees muted (silent, gesture-free) playback.
+  // Native muted autoplay (muted + autoPlay attributes) is the initiator and
+  // is always given the chance to start first: if the element is already
+  // playing, this is a no-op mark. Otherwise it issues the ONE muted play()
+  // — never while another is in flight, never after a pause/load, and never
+  // unmuting. No competing play() calls can exist: mount, canplay re-prime
+  // and the landing re-prime all funnel through here.
+  const ensureMutedPlayback = useCallback(
+    (reason) => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      try {
+        audio.loop = true;
+      } catch {
+        /* noop */
+      }
 
-    if (!audio.paused) {
-      primedPlaybackRef.current = audio.muted || primedPlaybackRef.current;
-      return;
-    }
+      // Already playing (native muted autoPlay beat us to it, or a previous
+      // ensure succeeded): mark primed, never play() again here.
+      if (!audio.paused || primedPlaybackRef.current) {
+        primedPlaybackRef.current = true;
+        dlog(`ensure:${reason}:already-playing`);
+        return;
+      }
+      // A muted play() attempt is already in flight — never stack play()
+      // calls while the first promise is pending.
+      if (primeInflightRef.current) {
+        dlog(`ensure:${reason}:inflight-skip`);
+        return;
+      }
+      primeInflightRef.current = true;
 
-    try {
-      audio.volume = 0;
-      audio.muted = true;
-      const p = audio.play();
-      if (p && typeof p.then === 'function') {
-        p.then(() => {
-          primedPlaybackRef.current = true;
-          if (hasStartedRef.current && landingVisibleRef.current && soundOnRef.current) {
+      try {
+        audio.volume = 0;
+        audio.muted = true;
+        try {
+          audio.defaultMuted = true;
+        } catch {
+          /* noop */
+        }
+        dlog(`ensure:${reason}:play-call`);
+        const p = audio.play();
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            primeInflightRef.current = false;
+            primedPlaybackRef.current = true;
+            dlog(`ensure:${reason}:play-resolved`);
+            // Slow-network edge: muted playback began only after landing
+            // already became visible — transition automatically (unmute +
+            // fade). Preserve currentTime: no restart of the instance.
+            if (
+              hasStartedRef.current &&
+              landingVisibleRef.current &&
+              soundOnRef.current
+            ) {
+              goAudible('late-resolve');
+            }
+          }).catch((err) => {
+            primeInflightRef.current = false;
+            primedPlaybackRef.current = false;
+            dlog(
+              `ensure:${reason}:play-rejected:${err && err.name ? err.name : err}`,
+            );
+            // Stay silent — keep muted so a later muted re-prime can still
+            // succeed without a user gesture.
             try {
-              audio.currentTime = 0;
+              audio.muted = true;
+              audio.volume = 0;
             } catch {
               /* noop */
             }
-            audio.muted = false;
-            audibleStartedRef.current = true;
-            setPlaybackPending(false);
-            fadeTo(TARGET_VOLUME);
+            attachUnlock();
+          });
+        } else {
+          primeInflightRef.current = false;
+          primedPlaybackRef.current = true;
+          dlog(`ensure:${reason}:play-sync`);
+          if (
+            hasStartedRef.current &&
+            landingVisibleRef.current &&
+            soundOnRef.current
+          ) {
+            goAudible('late-resolve-sync');
           }
-        }).catch(() => {
-          primedPlaybackRef.current = false;
-          audio.muted = false;
-          attachUnlock();
-        });
-      } else {
-        primedPlaybackRef.current = true;
+        }
+      } catch {
+        primeInflightRef.current = false;
+        primedPlaybackRef.current = false;
+        dlog(`ensure:${reason}:play-threw`);
+        try {
+          audio.muted = true;
+          audio.volume = 0;
+        } catch {
+          /* noop */
+        }
+        attachUnlock();
       }
-    } catch {
-      primedPlaybackRef.current = false;
-      audio.muted = false;
-      attachUnlock();
-    }
-  }, [attachUnlock, fadeTo]);
+    },
+    [attachUnlock, dlog, goAudible],
+  );
+
+  // Landing transition — automatic, no gesture needed.
+  // The element has been playing (muted, volume 0) since the preloader, so
+  // the normal path ONLY unmutes + fades the existing instance. There is
+  // deliberately NO play() call on this tick: re-calling play() re-enters
+  // the browser autoplay check and can reject, forcing a gesture fallback.
+  // Bounded automatic retries of the SAME muted ensure (same path, no
+  // gesture): covers policies where muted play() is rejected early but
+  // allowed seconds later with no interaction. Stops once audible.
+  const scheduleLandingRetries = useCallback(() => {
+    clearLandingRetries();
+    [1500, 3000, 6000].forEach((ms, i) => {
+      try {
+        landingRetryTimeoutsRef.current.push(
+          setTimeout(() => {
+            const audio = audioRef.current;
+            if (!audio) return;
+            if (audibleStartedRef.current) return;
+            if (
+              !hasStartedRef.current ||
+              !landingVisibleRef.current ||
+              !soundOnRef.current
+            )
+              return;
+            if (
+              !audio.paused ||
+              primedPlaybackRef.current ||
+              primeInflightRef.current
+            )
+              return;
+            dlog(`landing-retry:${i + 1}`);
+            ensureMutedPlayback(`landing-retry-${i + 1}`);
+          }, ms),
+        );
+      } catch {
+        /* noop */
+      }
+    });
+  }, [clearLandingRetries, dlog, ensureMutedPlayback]);
 
   const attemptPlay = useCallback(() => {
     const audio = audioRef.current;
@@ -310,98 +482,31 @@ export default function BackgroundAudio({ active }) {
       /* noop */
     }
 
-    if (primedPlaybackRef.current && !audio.paused) {
-      if (!audibleStartedRef.current) {
-        try {
-          audio.currentTime = 0;
-        } catch {
-          /* noop */
-        }
-      }
-      audio.muted = false;
-      audibleStartedRef.current = true;
-      setPlaybackPending(false);
-      fadeTo(TARGET_VOLUME);
-      detachUnlock();
-      return;
-    }
-
+    dlog('attemptPlay:landing-transition');
     if (!audio.paused) {
-      audio.muted = false;
-      audibleStartedRef.current = true;
-      setPlaybackPending(false);
-      fadeTo(TARGET_VOLUME);
-      detachUnlock();
+      // Already-playing muted phase: just unmute + fade. Same instance,
+      // same currentTime — no restart, no gesture.
+      goAudible('landing');
       return;
     }
 
-    try {
-      audio.muted = false;
-      audio.volume = 0;
-      const p = audio.play();
-      if (p && typeof p.then === 'function') {
-        p.then(() => {
-          if (landingVisibleRef.current && soundOnRef.current) {
-            audibleStartedRef.current = true;
-            primedPlaybackRef.current = false;
-            setPlaybackPending(false);
-            fadeTo(TARGET_VOLUME);
-          }
-          detachUnlock();
-        }).catch(() => {
-          audio.muted = true;
-          setPlaybackPending(true);
-          attachUnlock();
-        });
-      } else {
-        audibleStartedRef.current = true;
-        primedPlaybackRef.current = false;
-        setPlaybackPending(false);
-        fadeTo(TARGET_VOLUME);
-        detachUnlock();
-      }
-    } catch {
-      audio.muted = true;
-      setPlaybackPending(true);
-      attachUnlock();
-    }
-  }, [attachUnlock, detachUnlock, fadeTo]);
+    // Muted phase didn't survive (blocked/stalled): a muted re-prime needs
+    // no gesture; it auto-unmutes via goAudible when it resolves. Unlock
+    // listeners remain attached as fallback if even muted playback is
+    // blocked.
+    setPlaybackPending(true);
+    ensureMutedPlayback('landing-reprime');
+    scheduleLandingRetries();
+  }, [dlog, ensureMutedPlayback, goAudible, scheduleLandingRetries]);
 
-  const waitForAudioReady = useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio) return Promise.resolve();
-    try {
-      if (audio.readyState >= 3) return Promise.resolve();
-    } catch {
-      return Promise.resolve();
-    }
-    return new Promise((resolve) => {
-      let done = false;
-      const finish = () => {
-        if (done) return;
-        done = true;
-        try {
-          audio.removeEventListener('canplaythrough', finish);
-        } catch {
-          /* noop */
-        }
-        resolve();
-      };
-      try {
-        audio.addEventListener('canplaythrough', finish, { once: true });
-      } catch {
-        resolve();
-        return;
-      }
-      // Fallback so a slow network never blocks the gate forever
-      setTimeout(finish, 2500);
-      try {
-        audio.load();
-      } catch {
-        /* noop */
-      }
-    });
-  }, []);
+  // NOTE: landing visibility is a DOM fact and is deliberately NOT gated on
+  // audio buffering. If the element is already playing (muted), unmuting +
+  // fading immediately is correct even while stalled — the fade completes
+  // and the track is audible at TARGET_VOLUME as soon as data arrives.
+  // Gating landing on canplaythrough would delay the automatic transition
+  // (up to seconds on slow networks) and let a user gesture win the race,
+  // making the fallback look like the normal path. Buffering retries are
+  // owned by the canplay re-prime effect below — never by the landing gate.
 
   const isLandingActuallyVisible = useCallback(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined')
@@ -428,18 +533,38 @@ export default function BackgroundAudio({ active }) {
   const markLandingReady = useCallback(() => {
     if (hasStartedRef.current && landingVisibleRef.current) return;
     hasStartedRef.current = true;
+    dlog('landing:ready-marked');
     setLandingVisible(true);
-  }, []);
+  }, [dlog]);
 
-  // Attach gesture unlock on mount so the first available user interaction
-  // starts audio while state remains ON (covers autoplay-blocked fresh loads).
+  // Mount: enforce the silent preloader state, attach the fallback unlock
+  // listeners, then let native muted autoplay win — only ensure (ONE muted
+  // play()) if the element is still paused.
   useEffect(() => {
+    dlog('mount');
+    const audio = audioRef.current;
+    if (audio) {
+      try {
+        audio.loop = true;
+        audio.volume = 0;
+        audio.muted = true;
+        audio.defaultMuted = true;
+      } catch {
+        /* noop */
+      }
+    }
     attachUnlock();
-    primeMutedPlayback();
+    if (audio && !audio.paused) {
+      primedPlaybackRef.current = true;
+      dlog('mount:native-autoplay-active');
+    } else {
+      dlog('mount:native-not-playing');
+      ensureMutedPlayback('mount');
+    }
     return () => {
       detachUnlock();
     };
-  }, [attachUnlock, detachUnlock, primeMutedPlayback]);
+  }, [attachUnlock, detachUnlock, dlog, ensureMutedPlayback]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -461,44 +586,63 @@ export default function BackgroundAudio({ active }) {
       setPlaybackPending(false);
     };
 
-    audio.addEventListener('play', syncPlaybackState);
-    audio.addEventListener('pause', syncPlaybackState);
+    const onPlayEvt = () => {
+      dlog('event:play');
+      syncPlaybackState();
+    };
+    const onPauseEvt = () => {
+      dlog('event:pause');
+      syncPlaybackState();
+    };
+    const onErrorEvt = () => {
+      dlog('event:error');
+    };
+
+    audio.addEventListener('play', onPlayEvt);
+    audio.addEventListener('pause', onPauseEvt);
     audio.addEventListener('volumechange', syncPlaybackState);
+    audio.addEventListener('error', onErrorEvt);
 
     return () => {
-      audio.removeEventListener('play', syncPlaybackState);
-      audio.removeEventListener('pause', syncPlaybackState);
+      audio.removeEventListener('play', onPlayEvt);
+      audio.removeEventListener('pause', onPauseEvt);
       audio.removeEventListener('volumechange', syncPlaybackState);
+      audio.removeEventListener('error', onErrorEvt);
     };
-  }, []);
+  }, [dlog]);
 
-  // Retry autoplay once buffered enough (large file may not be ready at landing).
+  // Buffering safety net: funnel through the single ensureMutedPlayback()
+  // when the element is found paused — both while still in the preloader
+  // (so a slow network can't leave it paused before landing) and after
+  // landing (the ensure auto-unmutes via goAudible on success). Never
+  // unmutes here. Skipped once audible, and skipped when the user toggled
+  // sound OFF so we never revive audio the user silenced.
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return undefined;
     const onReady = () => {
-      if (
-        hasStartedRef.current &&
-        landingVisibleRef.current &&
-        soundOnRef.current &&
-        audio.paused
-      ) {
-        attemptPlay();
+      if (!soundOnRef.current) return;
+      if (audibleStartedRef.current) return;
+      if (audio.paused && !primedPlaybackRef.current) {
+        dlog('canplay:reprime-check');
+        ensureMutedPlayback('canplay');
       }
     };
     try {
+      audio.addEventListener('canplay', onReady);
       audio.addEventListener('canplaythrough', onReady);
     } catch {
       return undefined;
     }
     return () => {
       try {
+        audio.removeEventListener('canplay', onReady);
         audio.removeEventListener('canplaythrough', onReady);
       } catch {
         /* noop */
       }
     };
-  }, [attemptPlay]);
+  }, [dlog, ensureMutedPlayback]);
 
   // ── Explicit start signal: preloader-done event + active prop + settle ──
   useEffect(() => {
@@ -525,10 +669,11 @@ export default function BackgroundAudio({ active }) {
         (entries) => {
           if (cancelled) return;
           const entry = entries[0];
+          // Landing visibility is a DOM fact — mark ready immediately so the
+          // automatic unmute+fade is never delayed behind audio buffering.
           if (entry && entry.isIntersecting) {
-            waitForAudioReady().then(() => {
-              if (!cancelled) markLandingReady();
-            });
+            dlog('signal:observer-home-visible');
+            markLandingReady();
           }
         },
         { threshold: 0.2 },
@@ -541,17 +686,21 @@ export default function BackgroundAudio({ active }) {
     };
 
     const runSettledCheck = () => {
+      // Already started — ignore duplicate preloader-done/active triggers.
+      if (hasStartedRef.current) return;
       clearSettle();
       settleTimeoutRef.current = setTimeout(() => {
         requestAnimationFrame(() =>
           requestAnimationFrame(() => {
             if (cancelled) return;
             if (isLandingActuallyVisible()) {
-              waitForAudioReady().then(() => {
-                if (!cancelled) markLandingReady();
-              });
+              // Mark ready immediately — no audio-buffering gate, so the
+              // automatic unmute+fade fires on time without any gesture.
+              dlog('signal:settle-landing-visible');
+              markLandingReady();
             } else {
               // Loader finished but hero not yet in view — wait for it
+              dlog('signal:settle-waiting-observer');
               observeHomeUntilVisible();
             }
           }),
@@ -559,7 +708,10 @@ export default function BackgroundAudio({ active }) {
       }, SETTLE_DELAY);
     };
 
-    const onPreloaderDone = () => runSettledCheck();
+    const onPreloaderDone = () => {
+      dlog('signal:preloader-done');
+      runSettledCheck();
+    };
 
     document.addEventListener('preloader-done', onPreloaderDone);
     // Fallback path: parent state flipped (covers event timing races)
@@ -576,25 +728,27 @@ export default function BackgroundAudio({ active }) {
       }
       observerRef.current = null;
     };
-  }, [active, isLandingActuallyVisible, markLandingReady, waitForAudioReady]);
+  }, [active, dlog, isLandingActuallyVisible, markLandingReady]);
 
-  // React to confirmed landing visibility / toggle — play or pause only, never reload src
+  // React to confirmed landing visibility / toggle — unmute/fade or
+  // fade-out only, never reload src.
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     if (!landingVisible) {
+      // Preloader phase: the muted phase owns playback. Enforce silence
+      // here but NEVER pause and NEVER call play() from this effect —
+      // pausing aborts the gesture-free muted playback, and a second
+      // concurrent play() would abort the in-flight one. The single muted
+      // play() (if needed at all) is owned solely by ensureMutedPlayback().
       clearFade();
-      audio.volume = 0;
-      audio.muted = true;
-
-      if (!primedPlaybackRef.current) {
-        try {
-          audio.pause();
-        } catch {
-          /* noop */
-        }
+      try {
+        audio.volume = 0;
+        audio.muted = true;
+      } catch {
+        /* noop */
       }
-
+      dlog('phase:preloader-silent-enforced');
       return;
     }
     if (soundOn) {
@@ -606,13 +760,14 @@ export default function BackgroundAudio({ active }) {
         fadeTo(0, { pauseAtEnd: true });
       }
     }
-  }, [landingVisible, soundOn, attemptPlay, clearFade, fadeTo]);
+  }, [landingVisible, soundOn, attemptPlay, clearFade, dlog, fadeTo]);
 
   // Cleanup timers + gesture listeners on unmount
   useEffect(() => {
     return () => {
       clearFade();
       detachUnlock();
+      clearLandingRetries();
       if (settleTimeoutRef.current) {
         clearTimeout(settleTimeoutRef.current);
         settleTimeoutRef.current = null;
@@ -623,7 +778,7 @@ export default function BackgroundAudio({ active }) {
         /* noop */
       }
     };
-  }, [clearFade, detachUnlock]);
+  }, [clearFade, clearLandingRetries, detachUnlock]);
 
   const handleToggle = useCallback(() => {
     setSoundOn((prev) => !prev);
@@ -633,8 +788,20 @@ export default function BackgroundAudio({ active }) {
 
   return (
     <>
-      {/* Single persistent element — loop keeps it playing without interruption */}
-      <audio ref={audioRef} src={AUDIO_SRC} loop preload="auto" aria-hidden="true" />
+      {/* Single persistent element — loop keeps it playing without interruption.
+          Rendered ALREADY muted (+ autoPlay): the browser starts silent
+          playback on its own during the preloader, no gesture needed. JS
+          only enforces the muted prime, then unmutes + fades at landing. */}
+      <audio
+        ref={audioRef}
+        src={AUDIO_SRC}
+        loop
+        muted
+        autoPlay
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      />
 
       <style>{`
         .sound-toggle {

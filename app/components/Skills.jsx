@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ScrollRevealText from './ScrollRevealText';
@@ -69,15 +69,16 @@ export default function Skills() {
     <section id="services" className="section-padding min-h-screen" style={{ background: 'transparent' }}>
       <div className="content-container">
         <div className="flex items-center justify-between mb-16">
-          <ScrollRevealText
-            text="SKILLS"
-            as="p"
-            className="text-[14px] tracking-[0.4em] uppercase"
-            style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-inter)' }}
-            stagger={0.06}
-            duration={0.6}
-            start="top 85%"
-          />
+             <motion.p
+          className="text-[14px] tracking-[0.4em] uppercase mb-10 font-bold"
+          style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-inter)' }}
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: -4 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.5 }}
+        >
+          SKILLS
+        </motion.p>
           <motion.span
             className="text-[9px] tracking-[0.4em] uppercase hidden md:block"
             style={{ color: 'rgba(255,255,255,0.18)' }}
@@ -149,7 +150,7 @@ export default function Skills() {
                   transition: 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
                 }}
               >
-                →
+                ?
               </span>
             );
 
@@ -211,7 +212,7 @@ export default function Skills() {
                     transition: 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
                   }}
                 >
-                  →
+                  ?
                 </span>
 
                 <div className={`grid gap-2 md:gap-10 items-start ${gridTemplate} ${isReversed ? 'ml-4 md:ml-0' : 'mr-4 md:mr-0'}`}>

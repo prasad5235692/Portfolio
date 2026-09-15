@@ -1,9 +1,9 @@
-﻿'use client';
+'use client';
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import s from './Clients.module.css';
 
-/* ── Project data ────────────────────────────────────────────── */
+/* -- Project data ---------------------------------------------- */
 const projectData = [
   {
     id: '01',
@@ -33,7 +33,7 @@ const projectData = [
 
 const projects = projectData;
 
-/* ── Tunnel config (reference values, exact) ────────────────── */
+/* -- Tunnel config (reference values, exact) ------------------ */
 const CONFIG = {
   itemCount: 20,
   starCount: 150,
@@ -45,9 +45,9 @@ const CONFIG = {
 };
 CONFIG.loopSize = CONFIG.itemCount * CONFIG.zGap;
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    Helper: build one project card DOM node
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 function buildCard(project) {
   const card = document.createElement('div');
   card.className = 'tunnel-card';
@@ -116,16 +116,16 @@ function buildCard(project) {
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
   link.className = 'tunnel-card-link';
-  link.innerText = 'VIEW PROJECT →';
+  link.innerText = 'VIEW PROJECT ?';
   footer.appendChild(link);
   card.appendChild(footer);
 
   return card;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    Component
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 export default function Clients() {
   const sectionRef  = useRef(null);
   const viewportRef = useRef(null);
@@ -206,14 +206,14 @@ export default function Clients() {
       });
     }
 
-    /* ── Mouse tracking ──────────────────────────────────────── */
+    /* -- Mouse tracking ---------------------------------------- */
     const onMouseMove = (e) => {
       st.mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
       st.mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
     };
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-    /* ── Click handler — open active project ─────────────────── */
+    /* -- Click handler — open active project ------------------- */
     const onClick = () => {
       const idx = st.activeProject;
       if (idx >= 0 && idx < projects.length) {
@@ -225,13 +225,13 @@ export default function Clients() {
     };
     section.addEventListener('click', onClick);
 
-    /* ── Cursor events — enlarge only while pointer is inside ── */
+    /* -- Cursor events — enlarge only while pointer is inside -- */
     const onEnter = () => window.dispatchEvent(new CustomEvent('cursor:project'));
     const onLeave = () => window.dispatchEvent(new CustomEvent('cursor:endProject'));
     section.addEventListener('mouseenter', onEnter);
     section.addEventListener('mouseleave', onLeave);
 
-    /* ── RAF loop ────────────────────────────────────────────── */
+    /* -- RAF loop ---------------------------------------------- */
     let lastTime       = 0;
     let prevRawScroll  = 0;
     let rafId;
@@ -311,7 +311,7 @@ export default function Clients() {
         }
       });
 
-      /* ── Active project detection ──────────────────────────── */
+      /* -- Active project detection ---------------------------- */
       {
         let minDist = Infinity;
         let activeIdx = -1;
@@ -362,8 +362,8 @@ export default function Clients() {
             color: 'var(--accent-red)',
             fontFamily: 'var(--font-inter)',
           }}
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: -2 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.5 }}
         >

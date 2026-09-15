@@ -666,7 +666,7 @@ export default function Navigation({ visible }) {
       <div
         id="navbar-logo-anchor"
         aria-hidden="true"
-        className="fixed right-4 top-4 z-40 rounded-full border border-transparent px-4 py-2 text-[21px] tracking-[0.34em] md:right-6 md:top-6"
+        className="fixed right-4 top-4 z-40 w-11 h-11 rounded-full border border-transparent flex items-center justify-center p-0 text-[16px] md:text-[18px] font-medium md:right-6 md:top-6"
         style={{
           fontFamily: "var(--font-inter)",
           lineHeight: 1,
@@ -843,7 +843,7 @@ export default function Navigation({ visible }) {
         ref={logoRef}
         type="button"
         onClick={() => scrollTo("home")}
-        className="fixed right-4 top-4 z-50 rounded-full border border-[#ff003c]/40 bg-black/30 py-3.5 pl-[calc(1.5rem_+_0.34em)] pr-6 text-[21px] tracking-[0.34em] text-white shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl md:right-6 md:top-6"
+        className="fixed right-4 top-4 z-50 w-11 h-11 rounded-full border-2 border-[#ff003c] bg-black/35 flex items-center justify-center p-0 text-[16px] md:text-[18px] font-medium text-white shadow-[0_16px_50px_rgba(0,0,0,0.28)] backdrop-blur-xl md:right-6 md:top-6"
         style={{ fontFamily: "var(--font-inter)" }}
         initial={{ y: -24, opacity: 0 }}
         animate={{ y: visible ? 0 : -24, opacity: visible ? 1 : 0 }}
